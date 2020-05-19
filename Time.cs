@@ -1,9 +1,7 @@
-﻿using FedoraEngine;
-
-namespace FedoraEngine
+﻿namespace FedoraEngine
 {
     public static class Time
     {
-        public static float DeltaTime => (float)Core.GameTime!.ElapsedGameTime.TotalSeconds;
+        public static float DeltaTime => (float)Core.GameTime.ElapsedGameTime.TotalSeconds;
     }
 }
