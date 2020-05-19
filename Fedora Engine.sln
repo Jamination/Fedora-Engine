@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FedoraEngine", "D:\Visual Studio Projects\Test Game Engine\Fedora Engine\FedoraEngine.csproj", "{99A29887-6DE1-4A2A-97D0-272B30C7CF4C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FedoraEngine", "FedoraEngine.csproj", "{99A29887-6DE1-4A2A-97D0-272B30C7CF4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +26,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {CDFE56E2-E8A2-485D-89C8-E7163BAF365D}
+		SolutionGuid = {C323D7BA-5219-4BFF-9C61-D960D4566C35}
 	EndGlobalSection
 EndGlobal
