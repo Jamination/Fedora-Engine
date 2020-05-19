@@ -34,9 +34,12 @@ namespace FedoraEngine.ECS.Components.Physics
 
             var collider = GetComponent<BoxCollider>();
 
+            if (!collider.Collidable)
+                return;
+
             foreach (var entCollider in CollisionSystem.BoxColliders)
             {
-                if (entCollider == null || entCollider.Entity == Entity || !entCollider.Collidable || !entCollider.Entity.Enabled)
+                if (entCollider == null || entCollider.CollisionLayer != collider.CollisionLayer || entCollider.Entity == Entity || !entCollider.Collidable || !entCollider.Entity.Enabled)
                     continue;
 
                 var entMover = entCollider.GetComponent<Mover>();

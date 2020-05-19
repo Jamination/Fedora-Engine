@@ -2,7 +2,6 @@
 using FedoraEngine.ECS.Components.TileMap;
 using FedoraEngine.ECS.Systems;
 using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
 
 namespace FedoraEngine.ECS.Components.Physics
@@ -39,6 +38,9 @@ namespace FedoraEngine.ECS.Components.Physics
 
             IsOnRightSlope = false;
             IsOnLeftSlope = false;
+
+            if (!Collider.Collidable)
+                return;
 
             var neighbouringSlopeTiles = new HashSet<OgmoSlopedTile>();
 
@@ -77,7 +79,7 @@ namespace FedoraEngine.ECS.Components.Physics
 
             foreach (var tile in neighbouringSlopeTiles)
             {
-                if (tile == null || tile.Type == new Vector2(-1, -1) || !tile.Collidable)
+                if (tile == null || tile.CollisionLayer != Collider.CollisionLayer || tile.Type == new Vector2(-1, -1) || !tile.Collidable)
                     continue;
 
                 if (CollisionSystem.IsRectTouchingBottom(Collider.GlobalAABB, tile.AABB, velocity.Y))
@@ -155,7 +157,7 @@ namespace FedoraEngine.ECS.Components.Physics
 
             foreach (var tile in neighbouringTiles)
             {
-                if (tile == null || tile.Type == new Vector2(-1, -1) || !tile.Collidable || tile is OgmoSlopedTile)
+                if (tile == null || tile.CollisionLayer != Collider.CollisionLayer || tile.Type == new Vector2(-1, -1) || !tile.Collidable || tile is OgmoSlopedTile)
                     continue;
                 
                 if (!tile.OneWay && CollisionSystem.IsRectTouchingLeft(Collider.GlobalAABB, tile.AABB, velocity.X))

@@ -19,6 +19,8 @@ namespace FedoraEngine.ECS.Components.Collision
             }
         }
 
+        public uint CollisionLayer = 0;
+
         public bool Collidable = true;
         public bool Centered = true;
 

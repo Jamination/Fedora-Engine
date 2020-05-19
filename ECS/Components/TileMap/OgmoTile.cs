@@ -17,6 +17,8 @@ namespace FedoraEngine.ECS.Components.TileMap
 
         public bool Collidable { get; private set; } = true;
 
+        public int CollisionLayer { get; set; } = 0;
+
         public bool OneWay { get; private set; } = false;
 
         public Rectangle AABB
