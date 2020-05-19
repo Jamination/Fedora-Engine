@@ -27,6 +27,21 @@ namespace FedoraEngine.ECS.Components.Graphics
             _rectTexture.SetData(data);
         }
 
+        public BoxRenderer(int x, int y, uint width, uint height, Color colour)
+        {
+            Bounds = new Rectangle(x, y, (int)width, (int)height);
+            Colour = colour;
+
+            _rectTexture = new Texture2D(Graphics, Bounds.Width, Bounds.Height);
+
+            Color[] data = new Color[Bounds.Width * Bounds.Height];
+
+            for (int i = 0; i < data.Length; i++)
+                data[i] = Colour;
+
+            _rectTexture.SetData(data);
+        }
+
         public void Draw()
         {
             Vector2 CenterOrigin = Vector2.Zero;

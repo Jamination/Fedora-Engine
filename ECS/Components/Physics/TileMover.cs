@@ -40,39 +40,39 @@ namespace FedoraEngine.ECS.Components.Physics
             IsOnRightSlope = false;
             IsOnLeftSlope = false;
 
-            var neighbouringSlopeTiles = new List<OgmoSlopedTile>();
+            var neighbouringSlopeTiles = new HashSet<OgmoSlopedTile>();
 
-            neighbouringSlopeTiles.AddRange(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Left,
+            neighbouringSlopeTiles.UnionWith(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Left,
                 Collider.GlobalAABB.Bottom - 1));
-            neighbouringSlopeTiles.AddRange(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Left,
+            neighbouringSlopeTiles.UnionWith(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Left,
                 Collider.GlobalAABB.Bottom - 8));
-            neighbouringSlopeTiles.AddRange(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Left,
+            neighbouringSlopeTiles.UnionWith(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Left,
                 Collider.GlobalAABB.Bottom));
-            neighbouringSlopeTiles.AddRange(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Left,
+            neighbouringSlopeTiles.UnionWith(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Left,
                 Collider.GlobalAABB.Bottom + 8));
-            neighbouringSlopeTiles.AddRange(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Left + (int)(velocity.X * Time.DeltaTime),
+            neighbouringSlopeTiles.UnionWith(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Left + (int)(velocity.X * Time.DeltaTime),
                 Collider.GlobalAABB.Bottom + 1));
-            neighbouringSlopeTiles.AddRange(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Left + (int)(velocity.X * Time.DeltaTime),
+            neighbouringSlopeTiles.UnionWith(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Left + (int)(velocity.X * Time.DeltaTime),
                 Collider.GlobalAABB.Bottom + 8));
-            neighbouringSlopeTiles.AddRange(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Left,
+            neighbouringSlopeTiles.UnionWith(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Left,
                 Collider.GlobalAABB.Bottom + 16));
-            neighbouringSlopeTiles.AddRange(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Right,
+            neighbouringSlopeTiles.UnionWith(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Right,
                 Collider.GlobalAABB.Bottom - 1));
-            neighbouringSlopeTiles.AddRange(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Right,
+            neighbouringSlopeTiles.UnionWith(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Right,
                 Collider.GlobalAABB.Bottom - 8));
-            neighbouringSlopeTiles.AddRange(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Right,
+            neighbouringSlopeTiles.UnionWith(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Right,
                 Collider.GlobalAABB.Bottom));
-            neighbouringSlopeTiles.AddRange(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Right,
+            neighbouringSlopeTiles.UnionWith(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Right,
                 Collider.GlobalAABB.Bottom + 8));
-            neighbouringSlopeTiles.AddRange(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Right + (int)(velocity.X * Time.DeltaTime),
+            neighbouringSlopeTiles.UnionWith(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Right + (int)(velocity.X * Time.DeltaTime),
                 Collider.GlobalAABB.Bottom + 1));
-            neighbouringSlopeTiles.AddRange(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Right + (int)(velocity.X * Time.DeltaTime),
+            neighbouringSlopeTiles.UnionWith(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Right + (int)(velocity.X * Time.DeltaTime),
                 Collider.GlobalAABB.Bottom + 8));
-            neighbouringSlopeTiles.AddRange(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Right,
+            neighbouringSlopeTiles.UnionWith(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Right,
                 Collider.GlobalAABB.Bottom + 16));
-            neighbouringSlopeTiles.AddRange(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Left,
+            neighbouringSlopeTiles.UnionWith(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Left,
                 Collider.GlobalAABB.Top - 1));
-            neighbouringSlopeTiles.AddRange(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Right,
+            neighbouringSlopeTiles.UnionWith(CollisionSystem.GetSlopedTilesAt(Collider.GlobalAABB.Right,
                 Collider.GlobalAABB.Top - 1));
 
             foreach (var tile in neighbouringSlopeTiles)
@@ -123,34 +123,34 @@ namespace FedoraEngine.ECS.Components.Physics
             }
 
             IsOnCeiling = false;
-            var neighbouringTiles = new List<OgmoTile>();
+            var neighbouringTiles = new HashSet<OgmoTile>();
 
-            neighbouringTiles.AddRange(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Left + (int)(velocity.X * Time.DeltaTime),
+            neighbouringTiles.UnionWith(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Left + (int)(velocity.X * Time.DeltaTime),
                 Collider.GlobalAABB.Top));
-            neighbouringTiles.AddRange(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Left + (int)(velocity.X * Time.DeltaTime),
+            neighbouringTiles.UnionWith(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Left + (int)(velocity.X * Time.DeltaTime),
                 Collider.GlobalAABB.Bottom));
-            neighbouringTiles.AddRange(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Left + (int)(velocity.X * Time.DeltaTime),
+            neighbouringTiles.UnionWith(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Left + (int)(velocity.X * Time.DeltaTime),
                 (int)Position.Y));
 
-            neighbouringTiles.AddRange(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Right + (int)(velocity.X * Time.DeltaTime),
+            neighbouringTiles.UnionWith(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Right + (int)(velocity.X * Time.DeltaTime),
                 Collider.GlobalAABB.Top));
-            neighbouringTiles.AddRange(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Right + (int)(velocity.X * Time.DeltaTime),
+            neighbouringTiles.UnionWith(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Right + (int)(velocity.X * Time.DeltaTime),
                 Collider.GlobalAABB.Bottom));
-            neighbouringTiles.AddRange(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Right + (int)(velocity.X * Time.DeltaTime),
+            neighbouringTiles.UnionWith(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Right + (int)(velocity.X * Time.DeltaTime),
                 (int)Position.Y));
 
-            neighbouringTiles.AddRange(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Left,
+            neighbouringTiles.UnionWith(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Left,
                 Collider.GlobalAABB.Bottom + (int)(velocity.Y * Time.DeltaTime)));
-            neighbouringTiles.AddRange(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Right,
+            neighbouringTiles.UnionWith(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Right,
                 Collider.GlobalAABB.Bottom + (int)(velocity.Y * Time.DeltaTime)));
-            neighbouringTiles.AddRange(CollisionSystem.GetTilesAt((int)Position.X,
+            neighbouringTiles.UnionWith(CollisionSystem.GetTilesAt((int)Position.X,
                 Collider.GlobalAABB.Bottom + (int)(velocity.Y * Time.DeltaTime)));
 
-            neighbouringTiles.AddRange(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Left,
+            neighbouringTiles.UnionWith(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Left,
                 Collider.GlobalAABB.Top + (int)(velocity.Y * Time.DeltaTime)));
-            neighbouringTiles.AddRange(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Right,
+            neighbouringTiles.UnionWith(CollisionSystem.GetTilesAt(Collider.GlobalAABB.Right,
                 Collider.GlobalAABB.Top + (int)(velocity.Y * Time.DeltaTime)));
-            neighbouringTiles.AddRange(CollisionSystem.GetTilesAt((int)Position.X,
+            neighbouringTiles.UnionWith(CollisionSystem.GetTilesAt((int)Position.X,
                 Collider.GlobalAABB.Top + (int)(velocity.Y * Time.DeltaTime)));
 
             foreach (var tile in neighbouringTiles)

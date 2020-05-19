@@ -52,15 +52,20 @@ namespace FedoraEngine.ECS.Entities
             return (T)Components.FirstOrDefault(c => typeof(T).IsAssignableFrom(c.GetType()));
         }
 
-        public IList<T> GetComponents<T>() where T : Component
+        public IList<T> GetComponentsOfType<T>() where T : Component
         {
-            IList<T> components = new List<T>();
+            var components = new List<T>();
             foreach (var component in Components)
             {
                 if (component is T)
                     components.Add((T)component);
             }
             return components;
+        }
+
+        public IList<Component> GetComponents()
+        {
+            return Components;
         }
 
         public T AddComponent<T>(T component) where T : Component

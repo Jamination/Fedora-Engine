@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace FedoraEngine.ECS.Components.Collision
 {
-    public sealed class BoxCollider : Component, IUpdateable, IDrawable
+    public sealed class BoxCollider : Component, IDrawable
     {
         private Rectangle _aabb;
 
@@ -19,11 +19,12 @@ namespace FedoraEngine.ECS.Components.Collision
             }
         }
 
+        public bool Collidable = true;
         public bool Centered = true;
 
         public CollisionSystem CollisionSystem => Scene.CollisionSystem;
 
-        public List<BoxCollider> Colliders => CollisionSystem.BoxColliders;
+        public HashSet<BoxCollider> Colliders => CollisionSystem.BoxColliders;
 
         public Rectangle GlobalAABB
         {
@@ -39,10 +40,6 @@ namespace FedoraEngine.ECS.Components.Collision
         public bool DebugRender = false;
 
         private Texture2D _debugRectTexture;
-
-        public BoxCollider()
-        {
-        }
 
         public BoxCollider(int x, int y, ushort width, ushort height)
         {
@@ -64,10 +61,6 @@ namespace FedoraEngine.ECS.Components.Collision
                 data[i] = new Color(1f, 0f, 0f, .1f);
 
             _debugRectTexture.SetData(data);
-        }
-
-        public void Update()
-        {
         }
 
         public void Draw()

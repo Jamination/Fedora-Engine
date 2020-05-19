@@ -66,6 +66,7 @@
     <Compile Include="BetterContentManager.cs" />
     <Compile Include="ECS\Components\Camera.cs" />
     <Compile Include="ECS\Components\Collision\BoxCollider.cs" />
+    <Compile Include="ECS\Components\Collision\ITriggerListener.cs" />
     <Compile Include="ECS\Components\Component.cs" />
     <Compile Include="ECS\Components\Physics\Mover.cs" />
     <Compile Include="ECS\Components\Physics\TileMover.cs" />

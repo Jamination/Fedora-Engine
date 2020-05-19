@@ -1,21 +1,51 @@
-﻿using FedoraEngine.ECS.Components.Collision;
+﻿using FedoraEngine.ECS.Components;
+using FedoraEngine.ECS.Components.Collision;
 using FedoraEngine.ECS.Components.TileMap;
 using FedoraEngine.ECS.Entities;
 using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace FedoraEngine.ECS.Systems
 {
     public sealed class CollisionSystem : EntityProcessingSystem
     {
-        public static List<BoxCollider> BoxColliders { get; private set; }
+        public static HashSet<BoxCollider> BoxColliders { get; private set; }
 
-        public static List<OgmoMap> Maps { get; private set; }
+        public static HashSet<OgmoMap> Maps { get; private set; }
+
+        public static HashSet<Component> TriggerableComponents { get; private set; }
 
         public CollisionSystem()
         {
-            BoxColliders = new List<BoxCollider>();
-            Maps = new List<OgmoMap>();
+            BoxColliders = new HashSet<BoxCollider>();
+            TriggerableComponents = new HashSet<Component>();
+            Maps = new HashSet<OgmoMap>();
+        }
+
+        public override void Update(IList<Entity> entities)
+        {
+            foreach (var component in TriggerableComponents)
+            {
+                var collider = component.GetComponent<BoxCollider>();
+
+                if (collider == null)
+                    continue;
+
+                foreach (var entity in entities)
+                {
+                    if (component.Entity == entity)
+                        continue;
+
+                    var entityCollider = entity.GetComponent<BoxCollider>();
+
+                    if (entityCollider == null)
+                        continue;
+
+                    if (collider.GlobalAABB.Intersects(entityCollider.GlobalAABB))
+                        ((ITriggerListener)component).OnOverlap(entity);
+                }
+            }
         }
 
         public void UpdateDebugCollisions()
@@ -33,6 +63,15 @@ namespace FedoraEngine.ECS.Systems
                 BoxColliders.Add(collider);
             if (map != null)
                 Maps.Add(map);
+
+            foreach (var component in entity.Components)
+            {
+                if (typeof(ITriggerListener).IsAssignableFrom(component.GetType()) && component.GetComponent<BoxCollider>() != null)
+                {
+                    Console.WriteLine("AAAAAAAA");
+                    TriggerableComponents.Add(component);
+                }
+            }
         }
 
         public override void OnEntityRemovedFromScene(Entity entity)
@@ -44,6 +83,12 @@ namespace FedoraEngine.ECS.Systems
                 BoxColliders.Remove(collider);
             if (map != null)
                 Maps.Remove(map);
+
+            foreach (var component in TriggerableComponents)
+            {
+                if (component.Entity == entity)
+                    TriggerableComponents.Remove(component);
+            }
         }
 
         #region TileMapCollisions
