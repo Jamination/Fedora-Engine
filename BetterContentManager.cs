@@ -10,7 +10,7 @@ namespace FedoraEngine
     {
         public new Dictionary<string, object> LoadedAssets;
 
-        public BetterContentManager(IServiceProvider? serviceProvider, string rootDirectory) : base(serviceProvider, rootDirectory)
+        public BetterContentManager(IServiceProvider serviceProvider, string rootDirectory) : base(serviceProvider, rootDirectory)
         {
             LoadedAssets = new Dictionary<string, object>();
         }
@@ -24,7 +24,7 @@ namespace FedoraEngine
 
             using (var reader = new StreamReader($"Content/{assetPath}"))
             {
-                texture = Texture2D.FromStream(Core.Graphics?.GraphicsDevice, reader.BaseStream);
+                texture = Texture2D.FromStream(Core.Graphics.GraphicsDevice, reader.BaseStream);
                 reader.Close();
             }
 

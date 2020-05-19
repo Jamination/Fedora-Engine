@@ -8,8 +8,6 @@ using FedoraEngine.ECS.Entities;
 using FedoraEngine.ECS.Systems;
 using FedoraEngine.ECS.Components;
 
-#nullable enable
-
 namespace FedoraEngine.ECS.Scenes
 {
     public class Scene : IDisposable
@@ -26,13 +24,13 @@ namespace FedoraEngine.ECS.Scenes
 
         public readonly Core CurrentCore;
 
-        public GraphicsDevice? Graphics
+        public GraphicsDevice Graphics
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => Core.Graphics?.GraphicsDevice;
+            get => Core.Graphics.GraphicsDevice;
         }
 
-        public SpriteBatch? SpriteBatch
+        public SpriteBatch SpriteBatch
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => Core.SpriteBatch;
@@ -79,7 +77,7 @@ namespace FedoraEngine.ECS.Scenes
             foreach (var processingSystem in Systems)
             {
                 var system = (EntityProcessingSystem)processingSystem;
-                system?.OnEntityAddedToScene(entity);
+                system.OnEntityAddedToScene(entity);
             }
 
             return entity;
@@ -91,7 +89,7 @@ namespace FedoraEngine.ECS.Scenes
             foreach (var processingSystem in Systems)
             {
                 var system = (EntityProcessingSystem)processingSystem;
-                system?.OnEntityRemovedFromScene(entity);
+                system.OnEntityRemovedFromScene(entity);
             }
 
             return entity;
@@ -104,7 +102,7 @@ namespace FedoraEngine.ECS.Scenes
             return entity;
         }
 
-        public Entity? RemoveEntity(string entityName)
+        public Entity RemoveEntity(string entityName)
         {
             foreach (var entity in Entities)
             {
@@ -116,7 +114,7 @@ namespace FedoraEngine.ECS.Scenes
             return null;
         }
 
-        public Entity? DestroyEntity(string entityName)
+        public Entity DestroyEntity(string entityName)
         {
             foreach (var entity in Entities)
             {
@@ -139,7 +137,7 @@ namespace FedoraEngine.ECS.Scenes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Entity? FindEntity(string name)
+        public Entity FindEntity(string name)
         {
             foreach (var entity in Entities)
             {
@@ -168,14 +166,14 @@ namespace FedoraEngine.ECS.Scenes
 
         public virtual void Draw()
         {
-            Graphics?.Clear(ClearColour);
+            Graphics.Clear(ClearColour);
 
-            SpriteBatch?.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Matrix.CreateTranslation((int)Math.Round(Camera.Transform.Translation.X), (int)Math.Round(Camera.Transform.Translation.Y), 0));
+            SpriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Matrix.CreateTranslation((int)Math.Round(Camera.Transform.Translation.X), (int)Math.Round(Camera.Transform.Translation.Y), 0));
 
             foreach (var entity in Entities)
                 entity.DrawComponents();
 
-            SpriteBatch?.End();
+            SpriteBatch.End();
         }
 
         public void Dispose()

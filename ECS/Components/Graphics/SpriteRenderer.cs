@@ -3,13 +3,11 @@ using FedoraEngine.Graphics;
 using System;
 using System.Drawing;
 
-#nullable enable
-
 namespace FedoraEngine.ECS.Components.Graphics
 {
     public sealed class SpriteRenderer : Component, IDrawable
     {
-        public Sprite? Sprite { get; set; }
+        public Sprite Sprite { get; set; }
 
         public SpriteRenderer() { }
 

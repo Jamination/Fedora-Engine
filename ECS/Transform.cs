@@ -8,7 +8,7 @@ namespace FedoraEngine.ECS
 {
 	public sealed class Transform
 	{
-		private Transform? _parent;
+		private Transform _parent;
 		private DirtyType _hierarchyDirty;
 
 		private bool _localDirty;
@@ -56,7 +56,7 @@ namespace FedoraEngine.ECS
 
 		public readonly Entity Entity;
 
-		public Transform? Parent
+		public Transform Parent
 		{
 			get => _parent;
 			set => SetParent(value);
@@ -211,7 +211,7 @@ namespace FedoraEngine.ECS
 			return Children[index].Entity;
 		}
 
-		public Entity? FindChildByName(string name)
+		public Entity FindChildByName(string name)
 		{
 			foreach (var child in Children)
 			{
@@ -221,14 +221,14 @@ namespace FedoraEngine.ECS
 			return null;
 		}
 
-		public Transform SetParent(Transform? parent)
+		public Transform SetParent(Transform parent)
 		{
 			if (_parent == parent)
 				return this;
 
-			_parent?.Children.Remove(this);
+			_parent.Children.Remove(this);
 
-			parent?.Children.Add(this);
+			parent.Children.Add(this);
 
 			_parent = parent;
 			SetDirty(DirtyType.PositionDirty);

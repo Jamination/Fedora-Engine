@@ -4,8 +4,6 @@ using FedoraEngine.Engine.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-#nullable enable
-
 namespace FedoraEngine.ECS.Components
 {
     public class Camera
@@ -35,7 +33,7 @@ namespace FedoraEngine.ECS.Components
         
         public Rectangle Bounds { get; set; }
 
-        public Scene? Scene => Core.Scene;
+        public Scene Scene => Core.Scene;
 
         public Rectangle ScreenBounds
         {
@@ -62,7 +60,7 @@ namespace FedoraEngine.ECS.Components
                 _offset = Matrix.CreateTranslation((Core.StartWindowWidth / 2) / _zoomLevel, (Core.StartWindowHeight / 2) / _zoomLevel, 0f);
         }
 
-        public void Follow(Entity? entity)
+        public void Follow(Entity entity)
         {
             if (!_debugMode && entity != null)
             {

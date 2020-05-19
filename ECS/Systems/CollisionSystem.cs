@@ -4,15 +4,13 @@ using FedoraEngine.ECS.Entities;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-#nullable enable
-
 namespace FedoraEngine.ECS.Systems
 {
     public sealed class CollisionSystem : EntityProcessingSystem
     {
-        public static List<BoxCollider>? BoxColliders { get; private set; }
+        public static List<BoxCollider> BoxColliders { get; private set; }
 
-        public static List<OgmoMap>? Maps { get; private set; }
+        public static List<OgmoMap> Maps { get; private set; }
 
         public CollisionSystem()
         {
@@ -22,7 +20,7 @@ namespace FedoraEngine.ECS.Systems
 
         public void UpdateDebugCollisions()
         {
-            foreach (var collider in BoxColliders!)
+            foreach (var collider in BoxColliders)
                 collider.DebugRender = Core.GlobalDebugCollisionsEnabled;
         }
 
@@ -32,9 +30,9 @@ namespace FedoraEngine.ECS.Systems
             var map = entity.GetComponent<OgmoMap>();
 
             if (collider != null)
-                BoxColliders?.Add(collider);
+                BoxColliders.Add(collider);
             if (map != null)
-                Maps?.Add(map);
+                Maps.Add(map);
         }
 
         public override void OnEntityRemovedFromScene(Entity entity)
@@ -43,16 +41,16 @@ namespace FedoraEngine.ECS.Systems
             var map = entity.GetComponent<OgmoMap>();
 
             if (collider != null)
-                BoxColliders?.Remove(collider);
+                BoxColliders.Remove(collider);
             if (map != null)
-                Maps?.Remove(map);
+                Maps.Remove(map);
         }
 
         #region TileMapCollisions
 
         public static bool IsTileAt(int x, int y)
         {
-            foreach (var map in Maps!)
+            foreach (var map in Maps)
             {
                 foreach (var layer in map.MapData.Layers)
                 {
@@ -67,12 +65,12 @@ namespace FedoraEngine.ECS.Systems
         {
             var tiles = new List<OgmoTile>();
 
-            foreach (var map in Maps!)
+            foreach (var map in Maps)
             {
                 foreach (var layer in map.MapData.Layers)
                 {
                     if (layer != null)
-                        tiles.Add(layer!.GetTileAt(x, y));
+                        tiles.Add(layer.GetTileAt(x, y));
                 }
             }
             return tiles;
@@ -82,7 +80,7 @@ namespace FedoraEngine.ECS.Systems
         {
             var tiles = new List<OgmoSlopedTile>();
 
-            foreach (var map in Maps!)
+            foreach (var map in Maps)
             {
                 foreach (var layer in map.MapData.Layers)
                 {

@@ -4,8 +4,6 @@ using FedoraEngine.ECS.Systems;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-#nullable enable
-
 namespace FedoraEngine.ECS.Components.Physics
 {
     public class Mover : Component
@@ -14,7 +12,7 @@ namespace FedoraEngine.ECS.Components.Physics
 
         public bool HasCollidedThisFrame = false;
 
-        public List<Entity>? EntitiesCollidedWithThisFrame;
+        public List<Entity> EntitiesCollidedWithThisFrame;
 
         public override void OnAddedToEntity()
         {
@@ -32,14 +30,11 @@ namespace FedoraEngine.ECS.Components.Physics
             HasCollidedThisFrame = false;
             IsOnFloor = false;
 
-            EntitiesCollidedWithThisFrame?.Clear();
+            EntitiesCollidedWithThisFrame.Clear();
 
             var collider = GetComponent<BoxCollider>();
 
-            //var entities = CollisionSystem.QuadTree.GetEntitiesAtPos(Position);
-            //Console.WriteLine(entities.Count);
-
-            foreach (var entCollider in CollisionSystem.BoxColliders!)
+            foreach (var entCollider in CollisionSystem.BoxColliders)
             {
                 if (entCollider == null || entCollider.Entity == Entity || !entCollider.Entity.Enabled)
                     continue;
@@ -82,7 +77,7 @@ namespace FedoraEngine.ECS.Components.Physics
                 }
 
                 if (HasCollidedThisFrame)
-                    EntitiesCollidedWithThisFrame?.Add(entCollider.Entity);
+                    EntitiesCollidedWithThisFrame.Add(entCollider.Entity);
 
                 Position = newPosition;
                 velocity = newVelocity;

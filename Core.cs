@@ -7,33 +7,31 @@ using System.Collections.Generic;
 using FedoraEngine.ECS.Managers;
 using System;
 
-#nullable enable
-
 namespace FedoraEngine
 {
     public class Core : Game
     {
-        public static GraphicsDeviceManager? Graphics { get; protected set; }
+        public static GraphicsDeviceManager Graphics { get; protected set; }
 
-        public static SpriteBatch? SpriteBatch { get; protected set; }
+        public static SpriteBatch SpriteBatch { get; protected set; }
 
-        public static new BetterContentManager? Content { get; protected set; }
+        public static new BetterContentManager Content { get; protected set; }
 
-        public new static GameServiceContainer? Services => ((Game)_instance!)?.Services;
+        public new static GameServiceContainer Services => ((Game)_instance).Services;
 
-        public static GameTime? GameTime { get; protected set; }
+        public static GameTime GameTime { get; protected set; }
 
         public static bool ExitOnEscapePress = true;
 
-        public static Scene? Scene { get; protected set; }
+        public static Scene Scene { get; protected set; }
 
-        public static Scene? NextScene { get; protected set; }
+        public static Scene NextScene { get; protected set; }
 
-        public static Core? Instance => _instance;
+        public static Core Instance => _instance;
 
-        public static RenderTarget2D? MainRenderTarget { get; protected set; }
+        public static RenderTarget2D MainRenderTarget { get; protected set; }
 
-        public static List<Manager>? Managers { get; protected set; }
+        public static List<Manager> Managers { get; protected set; }
 
         private string _windowTitle;
         private readonly string _baseWindowTitle;
@@ -59,7 +57,7 @@ namespace FedoraEngine
             set
             {
                 _globalDebugCollisionsEnabled = value;
-                Scene?.CollisionSystem.UpdateDebugCollisions();
+                Scene.CollisionSystem.UpdateDebugCollisions();
             }
         }
 
@@ -69,7 +67,7 @@ namespace FedoraEngine
             set { _windowTitle = value; Window.Title = value; }
         }
 
-        private static Core? _instance;
+        private static Core _instance;
 
         public Core(uint windowWidth, uint windowHeight, string windowTitle, bool fullscreen = false)
         {
@@ -85,7 +83,7 @@ namespace FedoraEngine
 
             Graphics = new GraphicsDeviceManager(this);
 
-            Graphics!.IsFullScreen = _fullscreen;
+            Graphics.IsFullScreen = _fullscreen;
             Graphics.PreferredBackBufferWidth = (int)StartWindowWidth;
             Graphics.PreferredBackBufferHeight = (int)StartWindowHeight;
             Graphics.SynchronizeWithVerticalRetrace = true;
@@ -116,16 +114,16 @@ namespace FedoraEngine
 
             Managers = new List<Manager>();
 
-            Scene?.Load();
+            Scene.Load();
         }
 
         protected override void UnloadContent()
         {
-            Scene?.Dispose();
+            Scene.Dispose();
             NextScene = null;
 
-            Content?.Unload();
-            Content?.Dispose();
+            Content.Unload();
+            Content.Dispose();
         }
 
         public static void ChangeScene(Scene scene)
@@ -135,7 +133,7 @@ namespace FedoraEngine
 
         public static void RegisterGlobalManager(Manager manager)
         {
-            Managers?.Add(manager);
+            Managers.Add(manager);
         }
 
         protected override void Update(GameTime gameTime)
@@ -146,22 +144,22 @@ namespace FedoraEngine
                 Exit();
 
             if (Input.IsKeyPressed(Input.KeyMap["reloadScene"]))
-                Scene?.Reload();
+                Scene.Reload();
 
             if (Input.IsKeyPressed(Input.KeyMap["toggleDebugCollisions"]))
                 GlobalDebugCollisionsEnabled = !GlobalDebugCollisionsEnabled;
 
             if (NextScene != null)
             {
-                Scene?.Dispose();
+                Scene.Dispose();
                 Scene = NextScene;
                 NextScene = null;
             }
 
-            foreach (var manager in Managers!)
-                manager.Update(Scene!.Systems);
+            foreach (var manager in Managers)
+                manager.Update(Scene.Systems);
 
-            Scene?.Update();
+            Scene.Update();
 
 #if DEBUG
             _prevFps = _fps;
@@ -178,7 +176,7 @@ namespace FedoraEngine
             base.Draw(gameTime);
 
             GraphicsDevice.SetRenderTarget(MainRenderTarget);
-            Scene?.Draw();
+            Scene.Draw();
             GraphicsDevice.SetRenderTarget(null);
 
             float outputAspectRatio = Window.ClientBounds.Width / (float)Window.ClientBounds.Height;
@@ -201,9 +199,9 @@ namespace FedoraEngine
             }
 
             GraphicsDevice.Clear(ClearOptions.Target, Color.Black, 1f, 0);
-            SpriteBatch?.Begin(SpriteSortMode.Immediate, BlendState.Opaque, SamplerState.PointClamp, DepthStencilState.Default);
-            SpriteBatch?.Draw(MainRenderTarget, dst, Color.White);
-            SpriteBatch?.End();
+            SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque, SamplerState.PointClamp, DepthStencilState.Default);
+            SpriteBatch.Draw(MainRenderTarget, dst, Color.White);
+            SpriteBatch.End();
 
             GraphicsDevice.Textures[0] = null;
         }

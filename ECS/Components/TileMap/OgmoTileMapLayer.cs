@@ -3,25 +3,23 @@ using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
 using System;
 
-#nullable enable
-
 namespace FedoraEngine.ECS.Components.TileMap
 {
     public sealed class OgmoTileMapLayer : OgmoMapLayer, IDisposable
     {
-        public OgmoTile[,]? Tiles { get; private set; }
+        public OgmoTile[,] Tiles { get; private set; }
 
-        public JArray? DataCoords2D { get; private set; }
+        public JArray DataCoords2D { get; private set; }
 
-        public OgmoMap? TileMap { get; set; }
+        public OgmoMap TileMap { get; set; }
 
         public readonly uint TileWidth;
 
         public readonly uint TileHeight;
 
-        public string? Name { get; private set; }
+        public string Name { get; private set; }
 
-        public string? Tileset { get; private set; }
+        public string Tileset { get; private set; }
 
         public Texture2D TileAtlas { get; private set; }
 
@@ -57,7 +55,7 @@ namespace FedoraEngine.ECS.Components.TileMap
             return false;
         }
 
-        public OgmoTile? GetTileAt(int x, int y)
+        public OgmoTile GetTileAt(int x, int y)
         {
             if (TileMap != null)
             {
@@ -71,7 +69,7 @@ namespace FedoraEngine.ECS.Components.TileMap
             {
                 Vector2 tilePosition = new Vector2(x: x / (int)TileWidth / TileMap.Scale.X, y / (int)TileHeight / TileMap.Scale.Y);
 
-                if (Tiles?[(int)Math.Floor(tilePosition.X), (int)Math.Floor(tilePosition.Y)] != null)
+                if (Tiles[(int)Math.Floor(tilePosition.X), (int)Math.Floor(tilePosition.Y)] != null)
                     return Tiles[(int)Math.Floor(tilePosition.X), (int)Math.Floor(tilePosition.Y)];
             }
 
@@ -88,7 +86,7 @@ namespace FedoraEngine.ECS.Components.TileMap
 
             if (DataCoords2D != null)
             {
-                int[][][]? data = DataCoords2D.ToObject<int[][][]>();
+                int[][][] data = DataCoords2D.ToObject<int[][][]>();
 
                 if (data != null)
                     for (int i = 0; i < data.Length; i++)
@@ -139,11 +137,11 @@ namespace FedoraEngine.ECS.Components.TileMap
             if (TileMap != null && TileMap.Centered)
                 centerOrigin = new Vector2(TileMap.MapData.Width * .5f, TileMap.MapData.Height * .5f);
 
-            for (int x = 0; x < Tiles?.GetLength(0); x++)
+            for (int x = 0; x < Tiles.GetLength(0); x++)
             {
-                for (int y = 0; y < Tiles?.GetLength(1); y++)
+                for (int y = 0; y < Tiles.GetLength(1); y++)
                 {
-                    if (Tiles?[x, y].Type == new Vector2(-1, -1) || !Core.Scene!.Camera.ScreenBounds.Intersects(Tiles![x, y].AABB))
+                    if (Tiles[x, y].Type == new Vector2(-1, -1) || !Core.Scene.Camera.ScreenBounds.Intersects(Tiles[x, y].AABB))
                         continue;
 
                     if (Core.GlobalDebugCollisionsEnabled && Tiles[x, y].Collidable)
@@ -152,7 +150,7 @@ namespace FedoraEngine.ECS.Components.TileMap
                         Tiles[x, y].Colour = Color.White;
 
                     if (TileMap != null)
-                        Core.SpriteBatch?.Draw(
+                        Core.SpriteBatch.Draw(
                             TileAtlas,
                             new Vector2(
                                 x * TileWidth * (int)Math.Round(TileMap.Transform.Scale.X) + (int)Math.Round(TileMap.Transform.Position.X),

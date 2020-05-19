@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 
-#nullable enable
-
 namespace FedoraEngine.ECS.Components.TileMap
 {
     public class OgmoMapData
@@ -12,7 +10,7 @@ namespace FedoraEngine.ECS.Components.TileMap
 
         public List<OgmoTileMapLayer> Layers { get; private set; }
 
-        public OgmoMap? TileMap { get; set; }
+        public OgmoMap TileMap { get; set; }
 
         public OgmoMapData(uint width, uint height, List<OgmoTileMapLayer> layers)
         {
