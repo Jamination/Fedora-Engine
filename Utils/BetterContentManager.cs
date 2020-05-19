@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace FedoraEngine
+namespace FedoraEngine.Utils
 {
     public sealed class BetterContentManager : ContentManager
     {

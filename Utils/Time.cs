@@ -1,4 +1,4 @@
-﻿namespace FedoraEngine
+﻿namespace FedoraEngine.Utils
 {
     public static class Time
     {
