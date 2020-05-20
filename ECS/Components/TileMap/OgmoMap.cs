@@ -59,8 +59,6 @@ namespace FedoraEngine.ECS.Components.TileMap
         {
             foreach (var layer in MapData.Layers)
                 layer.Update();
-
-            Transform.RotationDegrees++;
         }
 
         public void Draw()

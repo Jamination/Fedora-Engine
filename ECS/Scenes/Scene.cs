@@ -151,8 +151,6 @@ namespace FedoraEngine.ECS.Scenes
 
         public virtual void Update()
         {
-            Input.UpdateState();
-
             foreach (var processingSystem in Systems)
                 processingSystem.Update();
 

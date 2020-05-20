@@ -19,7 +19,7 @@ namespace FedoraEngine.Engine.Input
         public static Dictionary<string, Keys[]> KeyMap = new Dictionary<string, Keys[]>
         {
             { "quit", new Keys[] { Keys.Escape, } },
-            { "reloadScene", new Keys[] { Keys.Tab, Keys.Enter, } },
+            { "reloadScene", new Keys[] { Keys.Tab, Keys.R, } },
             { "toggleDebugCollisions", new Keys[] { Keys.LeftAlt, } },
             { "debugCameraSprint", new Keys[] { Keys.LeftShift, } },
             { "toggleDebugCamera", new Keys[] { Keys.C, } },

@@ -9,6 +9,9 @@ using System;
 using FedoraEngine.Utils;
 using MonoGame.ImGui;
 using ImGuiNET;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
+using MonoGame.ImGui.Extensions;
+using System.Reflection;
 
 namespace FedoraEngine
 {
@@ -108,11 +111,14 @@ namespace FedoraEngine
             _baseWindowTitle = windowTitle;
 
             MainRenderTarget = new RenderTarget2D(GraphicsDevice, (int)windowWidth, (int)windowHeight, false, SurfaceFormat.Color, DepthFormat.None, 1, RenderTargetUsage.DiscardContents);
+
+            ImGUIRenderer = new ImGUIRenderer(Instance);
+            ImGUIRenderer.Initialize();
+            ImGUIRenderer.RebuildFontAtlas();
         }
 
         protected override void Initialize()
         {
-            ImGUIRenderer = new ImGUIRenderer(this).Initialize().RebuildFontAtlas();
             base.Initialize();
         }
 
@@ -148,6 +154,8 @@ namespace FedoraEngine
         {
             GameTime = gameTime;
 
+            Input.UpdateState();
+
             if ((GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Input.IsKeyDown(Input.KeyMap["quit"])) && ExitOnEscapePress)
                 Exit();
 
@@ -157,10 +165,10 @@ namespace FedoraEngine
             if (Input.IsKeyPressed(Input.KeyMap["toggleDebugCollisions"]))
                 GlobalDebugCollisionsEnabled = !GlobalDebugCollisionsEnabled;
 
-#if DEBUG
             if (Input.IsKeyPressed(Input.KeyMap["toggleImGui"]))
+            {
                 ImGuiEnabled = !ImGuiEnabled;
-#endif
+            }
 
             if (NextScene != null)
             {
@@ -186,18 +194,94 @@ namespace FedoraEngine
 
         protected virtual void BuildImGui(GameTime gameTime)
         {
-            ImGUIRenderer.BeginLayout(gameTime);
-
-            if (ImGui.BeginMainMenuBar())
-            {
-                if (ImGui.Button("Hello"))
-                {
-                    Console.WriteLine("AAAAAA");
-                }
-            }
+            ImGui.BeginMainMenuBar();
+            ImGui.Checkbox("Debug", ref _globalDebugCollisionsEnabled);
             ImGui.EndMainMenuBar();
 
-            ImGUIRenderer.EndLayout();
+            ImGui.Begin("Scene Settings");
+            var clearColour = new System.Numerics.Vector4(Scene.ClearColour.ToVector3().ToNumericVector3(), Scene.ClearColour.A / 255);
+            ImGui.ColorEdit4("Clear Colour", ref clearColour);
+            Scene.ClearColour = new Color(clearColour.X, clearColour.Y, clearColour.Z, clearColour.W);
+            ImGui.End();
+
+            ImGui.Begin("Scene Tree");
+
+            foreach (var entity in Scene.Entities)
+            {
+                if (ImGui.CollapsingHeader(entity.Name))
+                {
+                    ImGui.Indent();
+
+                    ImGui.TextColored(new System.Numerics.Vector4(Color.Yellow.ToVector3().ToNumericVector3(), 1f), "Transform:");
+                    ImGui.Indent();
+
+                    Vector2 tempPos = entity.Transform.Position;
+
+                    ImGui.InputFloat("Global X", ref tempPos.X);
+                    ImGui.InputFloat("Global Y", ref tempPos.Y);
+
+                    entity.Transform.Position = tempPos;
+
+                    ImGui.Unindent();
+
+                    ImGui.Spacing();
+
+                    ImGui.TextColored(new System.Numerics.Vector4(Color.Yellow.ToVector3().ToNumericVector3(), 1f), "Components:");
+                    ImGui.Indent();
+
+                    foreach (var component in entity.Components)
+                    {
+                        if (ImGui.CollapsingHeader(component.GetType().Name))
+                        {
+                            ImGui.Indent();
+                            foreach (var property in component.GetType().GetRuntimeProperties())
+                            {
+                                ImGui.Bullet();
+                                if (property.GetValue(component) is int)
+                                {
+                                    int value = (int)property.GetValue(component);
+                                    ImGui.InputInt(property.Name, ref value);
+                                    if (property.SetMethod != null && property.SetMethod.IsPublic)
+                                        property.SetValue(component, value);
+                                }
+                                else if (property.GetValue(component) is float)
+                                {
+                                    float value = (float)property.GetValue(component);
+                                    ImGui.InputFloat(property.Name, ref value);
+                                    if (property.SetMethod != null && property.SetMethod.IsPublic)
+                                        property.SetValue(component, value);
+                                }
+                                else if (property.GetValue(component) is bool)
+                                {
+                                    bool value = (bool)property.GetValue(component);
+                                    ImGui.Checkbox(property.Name, ref value);
+                                    if (property.SetMethod != null && property.SetMethod.IsPublic)
+                                        property.SetValue(component, value);
+                                }
+                                else if (property.GetValue(component) is Vector2)
+                                {
+                                    Vector2 value = (Vector2)property.GetValue(component);
+                                    ImGui.InputFloat($"{property.Name} X", ref value.X);
+                                    ImGui.Bullet();
+                                    ImGui.InputFloat($"{property.Name} Y", ref value.Y);
+                                    if (property.SetMethod != null && property.SetMethod.IsPublic)
+                                        property.SetValue(component, value);
+                                }
+                                else
+                                    ImGui.TextWrapped($"{property.Name}: {property.GetValue(component)}");
+                                ImGui.NewLine();
+                            }
+                            ImGui.Unindent();
+                        }
+                    }
+
+                    ImGui.Unindent();
+
+                    ImGui.Unindent();
+                }
+            }
+
+            ImGui.End();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -237,7 +321,9 @@ namespace FedoraEngine
 #if DEBUG
             if (ImGuiEnabled)
             {
+                ImGUIRenderer.BeginLayout(gameTime);
                 BuildImGui(gameTime);
+                ImGUIRenderer.EndLayout();
             }
 #endif
         }
