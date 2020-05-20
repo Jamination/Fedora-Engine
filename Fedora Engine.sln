@@ -5,22 +5,40 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FedoraEngine", "FedoraEngine.csproj", "{99A29887-6DE1-4A2A-97D0-272B30C7CF4C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImGui.NET", "..\ImGui.NET\src\ImGui.NET\ImGui.NET.csproj", "{623D04FB-AA8C-41DC-A1B3-2220985FFDAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{99A29887-6DE1-4A2A-97D0-272B30C7CF4C}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{99A29887-6DE1-4A2A-97D0-272B30C7CF4C}.Debug|x64.ActiveCfg = Debug|x64
 		{99A29887-6DE1-4A2A-97D0-272B30C7CF4C}.Debug|x64.Build.0 = Debug|x64
 		{99A29887-6DE1-4A2A-97D0-272B30C7CF4C}.Debug|x86.ActiveCfg = Debug|x86
 		{99A29887-6DE1-4A2A-97D0-272B30C7CF4C}.Debug|x86.Build.0 = Debug|x86
+		{99A29887-6DE1-4A2A-97D0-272B30C7CF4C}.Release|Any CPU.ActiveCfg = Release|x86
 		{99A29887-6DE1-4A2A-97D0-272B30C7CF4C}.Release|x64.ActiveCfg = Release|x64
 		{99A29887-6DE1-4A2A-97D0-272B30C7CF4C}.Release|x64.Build.0 = Release|x64
 		{99A29887-6DE1-4A2A-97D0-272B30C7CF4C}.Release|x86.ActiveCfg = Release|x86
 		{99A29887-6DE1-4A2A-97D0-272B30C7CF4C}.Release|x86.Build.0 = Release|x86
+		{623D04FB-AA8C-41DC-A1B3-2220985FFDAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{623D04FB-AA8C-41DC-A1B3-2220985FFDAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{623D04FB-AA8C-41DC-A1B3-2220985FFDAB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{623D04FB-AA8C-41DC-A1B3-2220985FFDAB}.Debug|x64.Build.0 = Debug|Any CPU
+		{623D04FB-AA8C-41DC-A1B3-2220985FFDAB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{623D04FB-AA8C-41DC-A1B3-2220985FFDAB}.Debug|x86.Build.0 = Debug|Any CPU
+		{623D04FB-AA8C-41DC-A1B3-2220985FFDAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{623D04FB-AA8C-41DC-A1B3-2220985FFDAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{623D04FB-AA8C-41DC-A1B3-2220985FFDAB}.Release|x64.ActiveCfg = Release|Any CPU
+		{623D04FB-AA8C-41DC-A1B3-2220985FFDAB}.Release|x64.Build.0 = Release|Any CPU
+		{623D04FB-AA8C-41DC-A1B3-2220985FFDAB}.Release|x86.ActiveCfg = Release|Any CPU
+		{623D04FB-AA8C-41DC-A1B3-2220985FFDAB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

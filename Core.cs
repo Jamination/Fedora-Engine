@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using FedoraEngine.ECS.Managers;
 using System;
 using FedoraEngine.Utils;
+using MonoGame.ImGui;
+using ImGuiNET;
 
 namespace FedoraEngine
 {
@@ -21,6 +23,8 @@ namespace FedoraEngine
         public new static GameServiceContainer Services => ((Game)_instance).Services;
 
         public static GameTime GameTime { get; protected set; }
+
+        public static ImGUIRenderer ImGUIRenderer { get; protected set; }
 
         public static bool ExitOnEscapePress = true;
 
@@ -68,6 +72,8 @@ namespace FedoraEngine
             set { _windowTitle = value; Window.Title = value; }
         }
 
+        public static bool ImGuiEnabled { get; set; } = false;
+
         private static Core _instance;
 
         public Core(uint windowWidth, uint windowHeight, string windowTitle, bool fullscreen = false)
@@ -106,6 +112,7 @@ namespace FedoraEngine
 
         protected override void Initialize()
         {
+            ImGUIRenderer = new ImGUIRenderer(this).Initialize().RebuildFontAtlas();
             base.Initialize();
         }
 
@@ -150,6 +157,11 @@ namespace FedoraEngine
             if (Input.IsKeyPressed(Input.KeyMap["toggleDebugCollisions"]))
                 GlobalDebugCollisionsEnabled = !GlobalDebugCollisionsEnabled;
 
+#if DEBUG
+            if (Input.IsKeyPressed(Input.KeyMap["toggleImGui"]))
+                ImGuiEnabled = !ImGuiEnabled;
+#endif
+
             if (NextScene != null)
             {
                 Scene.Dispose();
@@ -170,6 +182,22 @@ namespace FedoraEngine
                 WindowTitle = $"{_baseWindowTitle} : {_fps} fps";
 #endif
             base.Update(gameTime);
+        }
+
+        protected virtual void BuildImGui(GameTime gameTime)
+        {
+            ImGUIRenderer.BeginLayout(gameTime);
+
+            if (ImGui.BeginMainMenuBar())
+            {
+                if (ImGui.Button("Hello"))
+                {
+                    Console.WriteLine("AAAAAA");
+                }
+            }
+            ImGui.EndMainMenuBar();
+
+            ImGUIRenderer.EndLayout();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -201,10 +229,17 @@ namespace FedoraEngine
 
             GraphicsDevice.Clear(ClearOptions.Target, Color.Black, 1f, 0);
             SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque, SamplerState.PointClamp, DepthStencilState.Default);
-            SpriteBatch.Draw(MainRenderTarget, dst, Color.White);
+            SpriteBatch.Draw(MainRenderTarget, dst, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
             SpriteBatch.End();
 
             GraphicsDevice.Textures[0] = null;
+
+#if DEBUG
+            if (ImGuiEnabled)
+            {
+                BuildImGui(gameTime);
+            }
+#endif
         }
     }
 }

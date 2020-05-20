@@ -5,6 +5,6 @@ namespace FedoraEngine.ECS.Managers
 {
     public abstract class Manager
     {
-        public abstract void Update(IList<ProcessingSystem> systems);
+        public virtual void Update(IList<ProcessingSystem> systems) { }
     }
 }

@@ -23,6 +23,7 @@ namespace FedoraEngine.Engine.Input
             { "toggleDebugCollisions", new Keys[] { Keys.LeftAlt, } },
             { "debugCameraSprint", new Keys[] { Keys.LeftShift, } },
             { "toggleDebugCamera", new Keys[] { Keys.C, } },
+            { "toggleImGui", new Keys[] { Keys.OemTilde, } },
         };
 
         public static void UpdateState()
