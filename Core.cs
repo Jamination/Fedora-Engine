@@ -58,6 +58,8 @@ namespace FedoraEngine
 
         private bool _fullscreen = false;
 
+        private bool _steppedFrame = false;
+
         public static bool GlobalDebugCollisionsEnabled
         {
             get => _globalDebugCollisionsEnabled;
@@ -185,7 +187,14 @@ namespace FedoraEngine
             foreach (var manager in Managers)
                 manager.Update(Scene.Systems);
 
-            Scene.Update();
+            if (Input.IsKeyPressed(Input.KeyMap["stepForwardOneFrame"]) && Scene.Paused)
+            {
+                Scene.Paused = false;
+                Scene.Update();
+                Scene.Paused = true;
+            }
+            else if (!Scene.Paused)
+                Scene.Update();
 
 #if DEBUG
             _prevFps = _fps;

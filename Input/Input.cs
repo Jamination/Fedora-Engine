@@ -26,6 +26,7 @@ namespace FedoraEngine.Engine.Input
             { "debugCameraSprint", new Keys[] { Keys.LeftShift, } },
             { "toggleDebugCamera", new Keys[] { Keys.C, } },
             { "toggleImGui", new Keys[] { Keys.OemTilde, } },
+            { "stepForwardOneFrame", new Keys[] { Keys.RightAlt, } },
         };
 
         public static void UpdateState()
