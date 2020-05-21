@@ -141,7 +141,7 @@ namespace FedoraEngine.ECS.Components.TileMap
             {
                 for (int y = 0; y < Tiles.GetLength(1); y++)
                 {
-                    if (Tiles[x, y].Type == new Vector2(-1, -1) || !Core.Scene.Camera.ScreenBounds.Intersects(Tiles[x, y].AABB))
+                    if (Tiles[x, y].Type == new Vector2(-1, -1) || !Core.Scene.MainCamera.ScreenBounds.Intersects(Tiles[x, y].AABB))
                         continue;
 
                     if (Core.GlobalDebugCollisionsEnabled && Tiles[x, y].Collidable)

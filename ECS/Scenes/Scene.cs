@@ -21,7 +21,7 @@ namespace FedoraEngine.ECS.Scenes
 
         public CollisionSystem CollisionSystem;
 
-        public readonly Camera Camera;
+        public readonly Camera MainCamera;
 
         public readonly Core CurrentCore;
 
@@ -50,7 +50,7 @@ namespace FedoraEngine.ECS.Scenes
             Systems = new List<ProcessingSystem>();
             Entities = new List<Entity>();
 
-            Camera = new Camera();
+            MainCamera = new Camera();
 
             CollisionSystem = (CollisionSystem)RegisterSystem(new CollisionSystem());
         }
@@ -159,7 +159,8 @@ namespace FedoraEngine.ECS.Scenes
             if (Paused)
                 return;
 
-            World.Step((float)Core.GameTime.ElapsedGameTime.TotalMilliseconds * .001f);
+            if (World != null)
+                World.Step((float)Core.GameTime.ElapsedGameTime.TotalMilliseconds * .001f);
 
             foreach (var processingSystem in Systems)
                 processingSystem.Update();
@@ -167,17 +168,27 @@ namespace FedoraEngine.ECS.Scenes
             foreach (EntityProcessingSystem entitySystem in Systems)
                 entitySystem.Update(Entities);
 
+            var entitiesToDestroy = new HashSet<Entity>();
+
             foreach (var entity in Entities)
+            {
                 entity.UpdateComponents();
 
-            Camera.Update();
+                if (entity.Destroyed)
+                    entitiesToDestroy.Add(entity);
+            }
+
+            foreach (var entity in entitiesToDestroy)
+                Entities.Remove(entity);
+
+            MainCamera.Update();
         }
 
         public virtual void Draw()
         {
             Graphics.Clear(ClearColour);
 
-            SpriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Matrix.CreateTranslation((int)Math.Round(Camera.Transform.Translation.X), (int)Math.Round(Camera.Transform.Translation.Y), 0));
+            SpriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Matrix.CreateTranslation((int)Math.Round(MainCamera.Transform.Translation.X), (int)Math.Round(MainCamera.Transform.Translation.Y), 0));
 
             foreach (var entity in Entities)
                 entity.DrawComponents();

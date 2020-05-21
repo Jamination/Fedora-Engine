@@ -1,12 +1,13 @@
 ﻿using FedoraEngine.ECS.Components;
 using FedoraEngine.ECS.Scenes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace FedoraEngine.ECS.Entities
 {
-    public sealed class Entity
+    public sealed class Entity : IDisposable
     {
         public List<Component> Components { get; private set; }
 
@@ -17,6 +18,10 @@ namespace FedoraEngine.ECS.Entities
         public Transform Transform;
 
         public bool Enabled = true;
+
+        private bool _destroying = false;
+
+        public bool Destroyed { get; private set; } = false;
 
         public Scene Scene => Core.Scene;
 
@@ -121,6 +126,9 @@ namespace FedoraEngine.ECS.Entities
 
         public void UpdateComponents()
         {
+            if (_destroying)
+                Dispose();
+
             if (!Enabled)
                 return;
 
@@ -151,12 +159,20 @@ namespace FedoraEngine.ECS.Entities
 
         public void Destroy()
         {
+            _destroying = true;
+        }
+
+        public void Dispose()
+        {
             Enabled = false;
             foreach (var component in Components)
             {
                 component.OnRemovedFromEntity();
             }
             Components.Clear();
+
+            _destroying = false;
+            Destroyed = true;
         }
     }
 }

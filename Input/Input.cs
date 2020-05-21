@@ -108,30 +108,60 @@ namespace FedoraEngine.Engine.Input
 
         public static bool IsLeftMousePressed()
         {
-            return _mouseState.LeftButton == ButtonState.Pressed;
+            return _mouseState.LeftButton == ButtonState.Pressed && _prevMouseStates.LeftButton != ButtonState.Pressed;
         }
 
         public static bool IsLeftMouseReleased()
         {
-            return _mouseState.LeftButton == ButtonState.Released;
+            return _mouseState.LeftButton == ButtonState.Released && _prevMouseStates.LeftButton == ButtonState.Pressed;
         }
 
         public static bool IsRightMousePressed()
         {
-            return _mouseState.RightButton == ButtonState.Pressed;
+            return _mouseState.RightButton == ButtonState.Pressed && _prevMouseStates.RightButton != ButtonState.Pressed;
         }
 
         public static bool IsRightMouseReleased()
+        {
+            return _mouseState.RightButton == ButtonState.Released && _prevMouseStates.RightButton == ButtonState.Pressed;
+        }
+
+        public static bool IsLeftMouseDown()
+        {
+            return _mouseState.LeftButton == ButtonState.Pressed;
+        }
+
+        public static bool IsLeftMouseUp()
+        {
+            return _mouseState.LeftButton == ButtonState.Released;
+        }
+
+        public static bool IsRightMouseDown()
+        {
+            return _mouseState.RightButton == ButtonState.Pressed;
+        }
+
+        public static bool IsRightMouseUp()
         {
             return _mouseState.RightButton == ButtonState.Released;
         }
 
         public static bool IsMiddleMousePressed()
         {
-            return _mouseState.MiddleButton == ButtonState.Pressed;
+            return _mouseState.MiddleButton == ButtonState.Pressed && _prevMouseStates.MiddleButton != ButtonState.Pressed;
         }
 
         public static bool IsMiddleMouseReleased()
+        {
+            return _mouseState.MiddleButton == ButtonState.Released && _prevMouseStates.MiddleButton != ButtonState.Released;
+        }
+
+        public static bool IsMiddleMouseDown()
+        {
+            return _mouseState.MiddleButton == ButtonState.Pressed;
+        }
+
+        public static bool IsMiddleMouseUp()
         {
             return _mouseState.MiddleButton == ButtonState.Released;
         }

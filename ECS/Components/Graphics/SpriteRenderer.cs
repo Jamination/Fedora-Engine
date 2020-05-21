@@ -27,7 +27,7 @@ namespace FedoraEngine.ECS.Components.Graphics
                 centerOrigin = new Vector2(Sprite.SourceRect.Width * Sprite.Scale.X * .5f, Sprite.SourceRect.Height * Sprite.Scale.Y * .5f);
 
             var spriteRect = new RectangleF(Position.X - centerOrigin.X + Sprite.Bounds.X, Position.Y - centerOrigin.Y + Sprite.Bounds.Y, Sprite.Bounds.Width * Scale.X, Sprite.Bounds.Height * Scale.Y);
-            if (Sprite == null || !spriteRect.IntersectsWith(new RectangleF(Scene.Camera.ScreenBounds.X, Scene.Camera.ScreenBounds.Y, Scene.Camera.ScreenBounds.Width, Scene.Camera.ScreenBounds.Height)))
+            if (Sprite == null || !spriteRect.IntersectsWith(new RectangleF(Scene.MainCamera.ScreenBounds.X, Scene.MainCamera.ScreenBounds.Y, Scene.MainCamera.ScreenBounds.Width, Scene.MainCamera.ScreenBounds.Height)))
             {
                 return;
             }

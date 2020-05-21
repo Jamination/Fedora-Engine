@@ -54,6 +54,7 @@ namespace FedoraEngine.ECS.Components
         {
             new Rectangle(int.MinValue, int.MinValue, int.MaxValue, int.MaxValue);
 
+            _position = Matrix.CreateTranslation(new Vector3(-Core.StartWindowWidth / 2, -Core.StartWindowHeight / 2, 0f));
             _zoom = Matrix.CreateScale(_zoomLevel);
             _rotation = Matrix.CreateRotationZ(0f);
             if (_centered)
@@ -123,6 +124,12 @@ namespace FedoraEngine.ECS.Components
         public static Vector2 ScreenToWorld(Vector2 onScreen, Matrix transform)
         {
             var matrix = Matrix.Invert(transform);
+            return Vector2.Transform(onScreen, matrix);
+        }
+
+        public Vector2 ScreenToWorld(Vector2 onScreen)
+        {
+            var matrix = Matrix.Invert(Transform);
             return Vector2.Transform(onScreen, matrix);
         }
     }

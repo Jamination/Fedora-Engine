@@ -11,6 +11,7 @@ using MonoGame.ImGui;
 using ImGuiNET;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 using MonoGame.ImGui.Extensions;
+using FedoraEngine.ECS.Entities;
 
 namespace FedoraEngine
 {
@@ -221,6 +222,8 @@ namespace FedoraEngine
 
             ImGui.Begin("Scene Tree");
 
+            var entitiesToDestroy = new HashSet<Entity>();
+
             foreach (var entity in Scene.Entities)
             {
                 if (ImGui.CollapsingHeader(entity.Name))
@@ -228,6 +231,9 @@ namespace FedoraEngine
                     ImGui.Indent();
 
                     ImGui.Checkbox("Enabled", ref entity.Enabled);
+
+                    if (ImGui.Button("Destroy"))
+                        entitiesToDestroy.Add(entity);
 
                     ImGui.TextColored(new System.Numerics.Vector4(Color.Yellow.ToVector3().ToNumericVector3(), 1f), "Transform:");
                     ImGui.Indent();
@@ -327,6 +333,9 @@ namespace FedoraEngine
             }
 
             ImGui.End();
+
+            foreach (var entity in entitiesToDestroy)
+                entity.Destroy();
         }
 
         protected override void Draw(GameTime gameTime)
