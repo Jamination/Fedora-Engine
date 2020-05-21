@@ -10,17 +10,19 @@ namespace FedoraEngine.Graphics
     {
         public Texture2D Texture { get; private set; }
 
-        public Color Colour = Color.White;
+        public Color Colour { get; set; } = Color.White;
 
-        public Vector2 Scale = Vector2.One;
-        public Vector2 Origin = Vector2.Zero;
+        public Vector2 Scale { get; set; } = Vector2.One;
 
-        public SpriteEffects Flip = SpriteEffects.None;
+        public Vector2 Origin { get; set; } = Vector2.Zero;
 
-        public float Rotation = 0f;
-        public float LayerDepth = 0f;
+        public SpriteEffects Flip { get; set; } = SpriteEffects.None;
 
-        public bool Centered = true;
+        public float Rotation { get; set; } = 0f;
+
+        public float LayerDepth { get; set; } = 0f;
+
+        public bool Centered { get; set; } = true;
 
         public Rectangle SourceRect;
 

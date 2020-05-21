@@ -11,7 +11,6 @@ using MonoGame.ImGui;
 using ImGuiNET;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 using MonoGame.ImGui.Extensions;
-using System.Reflection;
 
 namespace FedoraEngine
 {
@@ -76,6 +75,8 @@ namespace FedoraEngine
         }
 
         public static bool ImGuiEnabled { get; set; } = false;
+
+        public static bool PhysicsEnabled { get; set; } = false;
 
         private static Core _instance;
 
@@ -165,10 +166,14 @@ namespace FedoraEngine
             if (Input.IsKeyPressed(Input.KeyMap["toggleDebugCollisions"]))
                 GlobalDebugCollisionsEnabled = !GlobalDebugCollisionsEnabled;
 
+            if (Input.IsKeyPressed(Input.KeyMap["pauseScene"]))
+                Scene.Paused = !Scene.Paused;
+
             if (Input.IsKeyPressed(Input.KeyMap["toggleImGui"]))
-            {
                 ImGuiEnabled = !ImGuiEnabled;
-            }
+
+            if (Input.IsKeyPressed(Input.KeyMap["toggleFullScreen"]))
+                Graphics.ToggleFullScreen();
 
             if (NextScene != null)
             {
@@ -195,10 +200,11 @@ namespace FedoraEngine
         protected virtual void BuildImGui(GameTime gameTime)
         {
             ImGui.BeginMainMenuBar();
-            ImGui.Checkbox("Debug", ref _globalDebugCollisionsEnabled);
+            ImGui.Checkbox("Debug Draw", ref _globalDebugCollisionsEnabled);
             ImGui.EndMainMenuBar();
 
             ImGui.Begin("Scene Settings");
+            ImGui.Checkbox("Paused", ref Scene.Paused);
             var clearColour = new System.Numerics.Vector4(Scene.ClearColour.ToVector3().ToNumericVector3(), Scene.ClearColour.A / 255);
             ImGui.ColorEdit4("Clear Colour", ref clearColour);
             Scene.ClearColour = new Color(clearColour.X, clearColour.Y, clearColour.Z, clearColour.W);
@@ -212,19 +218,41 @@ namespace FedoraEngine
                 {
                     ImGui.Indent();
 
+                    ImGui.Checkbox("Enabled", ref entity.Enabled);
+
                     ImGui.TextColored(new System.Numerics.Vector4(Color.Yellow.ToVector3().ToNumericVector3(), 1f), "Transform:");
                     ImGui.Indent();
 
-                    Vector2 tempPos = entity.Transform.Position;
+                    Vector2 tempPos = entity.Transform.LocalPosition;
 
-                    ImGui.InputFloat("Global X", ref tempPos.X);
-                    ImGui.InputFloat("Global Y", ref tempPos.Y);
+                    ImGui.InputFloat("Position X", ref tempPos.X);
+                    ImGui.InputFloat("Position Y", ref tempPos.Y);
 
-                    entity.Transform.Position = tempPos;
+                    if (entity.Transform.LocalPosition != tempPos)
+                        entity.Transform.LocalPosition = tempPos;
+
+                    ImGui.NewLine();
+
+                    Vector2 tempScale = entity.Transform.LocalScale;
+
+                    ImGui.InputFloat("Scale X", ref tempScale.X);
+                    ImGui.InputFloat("Scale Y", ref tempScale.Y);
+
+                    if (entity.Transform.LocalScale != tempScale)
+                        entity.Transform.LocalScale = tempScale;
+
+                    ImGui.NewLine();
+
+                    float tempRotation = entity.Transform.LocalRotation;
+
+                    ImGui.InputFloat("Rotation", ref tempRotation);
+
+                    if (entity.Transform.LocalRotation != tempRotation)
+                        entity.Transform.LocalRotation = tempRotation;
 
                     ImGui.Unindent();
 
-                    ImGui.Spacing();
+                    ImGui.NewLine();
 
                     ImGui.TextColored(new System.Numerics.Vector4(Color.Yellow.ToVector3().ToNumericVector3(), 1f), "Components:");
                     ImGui.Indent();
@@ -234,7 +262,7 @@ namespace FedoraEngine
                         if (ImGui.CollapsingHeader(component.GetType().Name))
                         {
                             ImGui.Indent();
-                            foreach (var property in component.GetType().GetRuntimeProperties())
+                            foreach (var property in component.GetType().GetProperties())
                             {
                                 ImGui.Bullet();
                                 if (property.GetValue(component) is int)
@@ -267,6 +295,14 @@ namespace FedoraEngine
                                     if (property.SetMethod != null && property.SetMethod.IsPublic)
                                         property.SetValue(component, value);
                                 }
+                                else if (property.GetValue(component) is Color)
+                                {
+                                    Color value = (Color)property.GetValue(component);
+                                    System.Numerics.Vector4 colour = new System.Numerics.Vector4(value.ToVector3().ToNumericVector3(), value.A / 255);
+                                    ImGui.ColorPicker4(property.Name, ref colour);
+                                    if (property.SetMethod != null && property.SetMethod.IsPublic)
+                                        property.SetValue(component, new Color(colour.X, colour.Y, colour.Z, colour.W));
+                                }
                                 else
                                     ImGui.TextWrapped($"{property.Name}: {property.GetValue(component)}");
                                 ImGui.NewLine();
@@ -290,6 +326,7 @@ namespace FedoraEngine
 
             GraphicsDevice.SetRenderTarget(MainRenderTarget);
             Scene.Draw();
+            Scene.SpriteBatch.End();
             GraphicsDevice.SetRenderTarget(null);
 
             float outputAspectRatio = Window.ClientBounds.Width / (float)Window.ClientBounds.Height;

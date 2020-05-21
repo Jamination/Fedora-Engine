@@ -3,11 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using FedoraEngine.Engine.Input;
 using FedoraEngine.ECS.Entities;
 using FedoraEngine.ECS.Systems;
 using FedoraEngine.ECS.Components;
 using FedoraEngine.Utils;
+using VelcroPhysics.Dynamics;
 
 namespace FedoraEngine.ECS.Scenes
 {
@@ -24,6 +24,10 @@ namespace FedoraEngine.ECS.Scenes
         public readonly Camera Camera;
 
         public readonly Core CurrentCore;
+
+        public bool Paused = false;
+
+        public World World { get; set; }
 
         public GraphicsDevice Graphics
         {
@@ -61,6 +65,7 @@ namespace FedoraEngine.ECS.Scenes
                 entity.Destroy();
 
             Entities.Clear();
+            World.Clear();
 
             Core.GlobalDebugCollisionsEnabled = false;
             Load();
@@ -151,6 +156,11 @@ namespace FedoraEngine.ECS.Scenes
 
         public virtual void Update()
         {
+            if (Paused)
+                return;
+
+            World.Step((float)Core.GameTime.ElapsedGameTime.TotalMilliseconds * .001f);
+
             foreach (var processingSystem in Systems)
                 processingSystem.Update();
 
@@ -171,8 +181,6 @@ namespace FedoraEngine.ECS.Scenes
 
             foreach (var entity in Entities)
                 entity.DrawComponents();
-
-            SpriteBatch.End();
         }
 
         public void Dispose()

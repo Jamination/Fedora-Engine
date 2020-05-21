@@ -6,25 +6,26 @@ namespace FedoraEngine.ECS.Components.Graphics
     public sealed class BoxRenderer : Component, IDrawable
     {
         public Rectangle Bounds;
-        public Color Colour;
+
+        public Color Colour { get; set; }
 
         public bool Centered = true;
 
-        private Texture2D _rectTexture;
+        public Texture2D RectTexture { get; set; }
 
         public BoxRenderer(Rectangle rect, Color colour)
         {
             Bounds = rect;
             Colour = colour;
 
-            _rectTexture = new Texture2D(Graphics, Bounds.Width, Bounds.Height);
+            RectTexture = new Texture2D(Graphics, Bounds.Width, Bounds.Height);
 
             Color[] data = new Color[Bounds.Width * Bounds.Height];
 
             for (int i = 0; i < data.Length; i++)
-                data[i] = Colour;
+                data[i] = Color.White;
 
-            _rectTexture.SetData(data);
+            RectTexture.SetData(data);
         }
 
         public BoxRenderer(int x, int y, uint width, uint height, Color colour)
@@ -32,14 +33,29 @@ namespace FedoraEngine.ECS.Components.Graphics
             Bounds = new Rectangle(x, y, (int)width, (int)height);
             Colour = colour;
 
-            _rectTexture = new Texture2D(Graphics, Bounds.Width, Bounds.Height);
+            RectTexture = new Texture2D(Graphics, Bounds.Width, Bounds.Height);
 
             Color[] data = new Color[Bounds.Width * Bounds.Height];
 
             for (int i = 0; i < data.Length; i++)
-                data[i] = Colour;
+                data[i] = Color.White;
 
-            _rectTexture.SetData(data);
+            RectTexture.SetData(data);
+        }
+
+        public BoxRenderer(uint width, uint height, Color colour)
+        {
+            Bounds = new Rectangle(0, 0, (int)width, (int)height);
+            Colour = colour;
+
+            RectTexture = new Texture2D(Graphics, Bounds.Width, Bounds.Height);
+
+            Color[] data = new Color[Bounds.Width * Bounds.Height];
+
+            for (int i = 0; i < data.Length; i++)
+                data[i] = Color.White;
+
+            RectTexture.SetData(data);
         }
 
         public void Draw()
@@ -50,7 +66,7 @@ namespace FedoraEngine.ECS.Components.Graphics
                 CenterOrigin = new Vector2(Bounds.Width * .5f, Bounds.Height * .5f);
 
             SpriteBatch.Draw(
-                    _rectTexture,
+                    RectTexture,
                     Position,
                     null,
                     Colour,

@@ -20,6 +20,8 @@ namespace FedoraEngine.Engine.Input
         {
             { "quit", new Keys[] { Keys.Escape, } },
             { "reloadScene", new Keys[] { Keys.Tab, Keys.R, } },
+            { "pauseScene", new Keys[] { Keys.RightControl, } },
+            { "toggleFullScreen", new Keys[] { Keys.F11, } },
             { "toggleDebugCollisions", new Keys[] { Keys.LeftAlt, } },
             { "debugCameraSprint", new Keys[] { Keys.LeftShift, } },
             { "toggleDebugCamera", new Keys[] { Keys.C, } },

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FedoraEngine", "FedoraEngin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImGui.NET", "..\ImGui.NET\src\ImGui.NET\ImGui.NET.csproj", "{623D04FB-AA8C-41DC-A1B3-2220985FFDAB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VelcroPhysics.MonoGame", "..\VelcroPhysics\VelcroPhysics\VelcroPhysics.MonoGame.csproj", "{769138AA-62FE-4048-B652-F5EBD9FCFC7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,18 @@ Global
 		{623D04FB-AA8C-41DC-A1B3-2220985FFDAB}.Release|x64.Build.0 = Release|Any CPU
 		{623D04FB-AA8C-41DC-A1B3-2220985FFDAB}.Release|x86.ActiveCfg = Release|Any CPU
 		{623D04FB-AA8C-41DC-A1B3-2220985FFDAB}.Release|x86.Build.0 = Release|Any CPU
+		{769138AA-62FE-4048-B652-F5EBD9FCFC7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{769138AA-62FE-4048-B652-F5EBD9FCFC7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{769138AA-62FE-4048-B652-F5EBD9FCFC7B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{769138AA-62FE-4048-B652-F5EBD9FCFC7B}.Debug|x64.Build.0 = Debug|Any CPU
+		{769138AA-62FE-4048-B652-F5EBD9FCFC7B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{769138AA-62FE-4048-B652-F5EBD9FCFC7B}.Debug|x86.Build.0 = Debug|Any CPU
+		{769138AA-62FE-4048-B652-F5EBD9FCFC7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{769138AA-62FE-4048-B652-F5EBD9FCFC7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{769138AA-62FE-4048-B652-F5EBD9FCFC7B}.Release|x64.ActiveCfg = Release|Any CPU
+		{769138AA-62FE-4048-B652-F5EBD9FCFC7B}.Release|x64.Build.0 = Release|Any CPU
+		{769138AA-62FE-4048-B652-F5EBD9FCFC7B}.Release|x86.ActiveCfg = Release|Any CPU
+		{769138AA-62FE-4048-B652-F5EBD9FCFC7B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

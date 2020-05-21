@@ -70,6 +70,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ECS\Components\Physics\PhysicsBody.cs" />
     <Compile Include="Export.cs" />
     <Compile Include="Utils\BetterContentManager.cs" />
     <Compile Include="ECS\Components\Camera.cs" />
@@ -139,7 +140,12 @@
     <None Include="app.manifest" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\VelcroPhysics\VelcroPhysics\VelcroPhysics.MonoGame.csproj">
+      <Project>{229bdd75-6cb3-4533-8fd3-5c0336bb6435}</Project>
+      <Name>VelcroPhysics.MonoGame</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <PropertyGroup>

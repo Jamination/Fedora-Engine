@@ -12,7 +12,7 @@ namespace FedoraEngine.ECS.Components
 
         public Scene Scene => Entity.Scene;
 
-        public bool Enabled = true;
+        public bool Enabled { get; set; } = true;
 
         public Transform Transform
         {
@@ -41,7 +41,8 @@ namespace FedoraEngine.ECS.Components
 
         public Component()
         {
-            Entity = new Entity("Unknown");
+            if (Entity == null)
+                Entity = new Entity("N/A");
         }
 
         protected GraphicsDevice Graphics => Core.Graphics.GraphicsDevice;
