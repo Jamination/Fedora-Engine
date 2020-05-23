@@ -18,6 +18,8 @@ namespace FedoraEngine.ECS.Components.Graphics
             get => new Rectangle((int)Position.X, (int)Position.Y, Bounds.Width * (int)Scale.X, Bounds.Height * (int)Scale.Y);
         }
 
+        public bool Sorting { get; set; } = true;
+
         public float RenderLayer { get; set; }
 
         public BoxRenderer(Rectangle rect, Color colour)

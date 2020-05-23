@@ -165,6 +165,7 @@ namespace FedoraEngine
             if ((GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Input.IsKeyDown(Input.KeyMap["quit"])) && ExitOnEscapePress)
                 Exit();
 
+#if DEBUG
             if (Input.IsKeyPressed(Input.KeyMap["reloadScene"]))
                 Scene.Reload();
 
@@ -176,6 +177,7 @@ namespace FedoraEngine
 
             if (Input.IsKeyPressed(Input.KeyMap["toggleImGui"]))
                 ImGuiEnabled = !ImGuiEnabled;
+#endif
 
             if (Input.IsKeyPressed(Input.KeyMap["toggleFullScreen"]))
                 Graphics.ToggleFullScreen();

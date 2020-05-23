@@ -14,6 +14,8 @@ namespace FedoraEngine.ECS.Components.TileMap
 
         public float RenderLayer { get; set; }
 
+        public bool Sorting { get; set; } = true;
+
         private string _filePath;
 
         public Dictionary<Vector2, bool> NonCollidableTiles;

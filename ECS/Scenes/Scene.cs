@@ -9,6 +9,7 @@ using FedoraEngine.ECS.Components;
 using FedoraEngine.Utils;
 using VelcroPhysics.Dynamics;
 using FedoraEngine.Graphics;
+using System.Linq;
 
 namespace FedoraEngine.ECS.Scenes
 {
@@ -70,7 +71,9 @@ namespace FedoraEngine.ECS.Scenes
                 entity.Destroy();
 
             Entities.Clear();
-            World.Clear();
+
+            if (World != null)
+                World.Clear();
 
             Core.GlobalDebugCollisionsEnabled = false;
             Load();
@@ -198,19 +201,19 @@ namespace FedoraEngine.ECS.Scenes
             switch (SortMode)
             {
                 case SortModes.YSort:
-                    foreach (var entity in Entities)
+                    foreach (var entity in Entities.Where(e => e.Sorting))
                         entity.RenderLayer = entity.Transform.Position.Y;
                     break;
                 case SortModes.DescendingYSort:
-                    foreach (var entity in Entities)
+                    foreach (var entity in Entities.Where(e => e.Sorting))
                         entity.RenderLayer = -entity.Transform.Position.Y;
                     break;
                 case SortModes.XSort:
-                    foreach (var entity in Entities)
+                    foreach (var entity in Entities.Where(e => e.Sorting))
                         entity.RenderLayer = entity.Transform.Position.X;
                     break;
                 case SortModes.DescendingXSort:
-                    foreach (var entity in Entities)
+                    foreach (var entity in Entities.Where(e => e.Sorting))
                         entity.RenderLayer = -entity.Transform.Position.X;
                     break;
             }

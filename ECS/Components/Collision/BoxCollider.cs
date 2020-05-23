@@ -19,10 +19,13 @@ namespace FedoraEngine.ECS.Components.Collision
             }
         }
 
-        public uint CollisionLayer = 0;
+        public uint CollisionLayer { get; set; } = 0;
 
-        public bool Collidable = true;
-        public bool Centered = true;
+        public bool Collidable { get; set; } = true;
+
+        public bool Centered { get; set; } = true;
+
+        public bool Sorting { get; set; } = false;
 
         public CollisionSystem CollisionSystem => Scene.CollisionSystem;
 

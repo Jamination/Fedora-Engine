@@ -226,7 +226,8 @@ namespace FedoraEngine.ECS
 			if (_parent == parent)
 				return this;
 
-			_parent.Children.Remove(this);
+			if (_parent != null)
+				_parent.Children.Remove(this);
 
 			parent.Children.Add(this);
 
