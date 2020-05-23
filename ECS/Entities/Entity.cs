@@ -20,7 +20,7 @@ namespace FedoraEngine.ECS.Entities
 
         private bool _enabled = true;
 
-        public int RenderLayer { get; set; }
+        public float RenderLayer { get; set; }
 
         public Rectangle AABB
         {

@@ -39,7 +39,7 @@ namespace FedoraEngine.ECS.Components.Collision
             }
         }
 
-        public int RenderLayer { get; set; }
+        public float RenderLayer { get; set; }
 
         public bool DebugRender = false;
 
@@ -48,6 +48,11 @@ namespace FedoraEngine.ECS.Components.Collision
         public BoxCollider(int x, int y, ushort width, ushort height)
         {
             AABB = new Rectangle(x, y, width, height);
+        }
+
+        public BoxCollider(ushort width, ushort height)
+        {
+            AABB = new Rectangle(0, 0, width, height);
         }
 
         public BoxCollider(Rectangle boundingBox)

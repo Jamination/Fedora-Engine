@@ -41,6 +41,8 @@ namespace FedoraEngine
 
         public static List<Manager> Managers { get; protected set; }
 
+        public static Vector2 ScreenCentre => new Vector2(Instance.GraphicsDevice.Viewport.Width * .5f, Instance.GraphicsDevice.Viewport.Height * .5f);
+
         private string _windowTitle;
         private readonly string _baseWindowTitle;
 

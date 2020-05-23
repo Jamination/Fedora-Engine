@@ -75,7 +75,7 @@ namespace FedoraEngine.ECS.Components.Physics
                 }
                 else if (CollisionSystem.IsTouchingBottom(collider, entCollider, velocity.Y))
                 {
-                    newPosition = new Vector2(newPosition.X, entCollider.GlobalAABB.Bottom + collider.AABB.Location.Y + collider.GlobalAABB.Height * .5f);
+                    newPosition = new Vector2(newPosition.X, entCollider.GlobalAABB.Bottom - collider.AABB.Location.Y + collider.GlobalAABB.Height * .5f);
                     newVelocity.Y = 0f;
                     HasCollidedThisFrame = true;
                 }

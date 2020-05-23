@@ -15,7 +15,7 @@ namespace FedoraEngine.ECS.Components.Graphics
 
         public new Rectangle AABB => new Rectangle(Position.ToPoint(), new Point((int)Sprite.Bounds.Width, (int)Sprite.Bounds.Height));
 
-        public int RenderLayer { get; set; }
+        public float RenderLayer { get; set; }
 
         public SpriteRenderer(Sprite sprite)
         {

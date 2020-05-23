@@ -8,8 +8,7 @@ using FedoraEngine.ECS.Systems;
 using FedoraEngine.ECS.Components;
 using FedoraEngine.Utils;
 using VelcroPhysics.Dynamics;
-using System.Security.Policy;
-using System.Linq;
+using FedoraEngine.Graphics;
 
 namespace FedoraEngine.ECS.Scenes
 {
@@ -28,6 +27,10 @@ namespace FedoraEngine.ECS.Scenes
         public readonly Core CurrentCore;
 
         public bool Paused = false;
+
+        public SortModes SortMode { get; set; } = SortModes.None;
+
+        public Vector2 ScreenCentre => Core.ScreenCentre;
 
         public World World { get; set; }
 
@@ -191,6 +194,26 @@ namespace FedoraEngine.ECS.Scenes
             Graphics.Clear(ClearColour);
 
             SpriteBatch.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointClamp, transformMatrix: Matrix.CreateTranslation((int)Math.Round(MainCamera.Transform.Translation.X), (int)Math.Round(MainCamera.Transform.Translation.Y), 0));
+
+            switch (SortMode)
+            {
+                case SortModes.YSort:
+                    foreach (var entity in Entities)
+                        entity.RenderLayer = entity.Transform.Position.Y;
+                    break;
+                case SortModes.DescendingYSort:
+                    foreach (var entity in Entities)
+                        entity.RenderLayer = -entity.Transform.Position.Y;
+                    break;
+                case SortModes.XSort:
+                    foreach (var entity in Entities)
+                        entity.RenderLayer = entity.Transform.Position.X;
+                    break;
+                case SortModes.DescendingXSort:
+                    foreach (var entity in Entities)
+                        entity.RenderLayer = -entity.Transform.Position.X;
+                    break;
+            }
 
             Entities.Sort((ent1, ent2) => ent1.RenderLayer.CompareTo(ent2.RenderLayer));
 

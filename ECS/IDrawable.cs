@@ -2,7 +2,7 @@
 {
     public interface IDrawable
     {
-        int RenderLayer { get; set; }
+        float RenderLayer { get; set; }
 
         void Draw();
     }

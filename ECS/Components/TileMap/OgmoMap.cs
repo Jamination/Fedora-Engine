@@ -12,7 +12,7 @@ namespace FedoraEngine.ECS.Components.TileMap
 
         public bool Centered { get; set; } = false;
 
-        public int RenderLayer { get; set; }
+        public float RenderLayer { get; set; }
 
         private string _filePath;
 

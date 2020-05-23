@@ -70,8 +70,10 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ECS\Components\Graphics\DepthSort.cs" />
     <Compile Include="ECS\Components\Physics\PhysicsBody.cs" />
     <Compile Include="Export.cs" />
+    <Compile Include="Graphics\SortModes.cs" />
     <Compile Include="Utils\BetterContentManager.cs" />
     <Compile Include="ECS\Components\Camera.cs" />
     <Compile Include="ECS\Components\Collision\BoxCollider.cs" />
