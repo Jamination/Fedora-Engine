@@ -12,6 +12,8 @@ namespace FedoraEngine.ECS.Components.TileMap
 
         public bool Centered { get; set; } = false;
 
+        public int RenderLayer { get; set; }
+
         private string _filePath;
 
         public Dictionary<Vector2, bool> NonCollidableTiles;
@@ -63,6 +65,8 @@ namespace FedoraEngine.ECS.Components.TileMap
 
         public void Draw()
         {
+            MapData.Layers.Sort((layer1, layer2) => layer1.RenderLayer.CompareTo(layer2.RenderLayer));
+
             foreach (var layer in MapData.Layers)
                 layer.Draw();
         }

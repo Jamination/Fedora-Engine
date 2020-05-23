@@ -1,5 +1,6 @@
 ﻿using FedoraEngine.ECS.Components;
 using FedoraEngine.ECS.Scenes;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,35 @@ namespace FedoraEngine.ECS.Entities
 
         public Transform Transform;
 
-        public bool Enabled = true;
+        private bool _enabled = true;
+
+        public int RenderLayer { get; set; }
+
+        public Rectangle AABB
+        {
+            get
+            {
+                var rect = new Rectangle(Transform.Position.ToPoint(), new Point());
+                foreach (var component in Components)
+                    rect = Rectangle.Union(component.AABB, rect);
+                return rect;
+            }
+        }
+
+        public List<Component> DrawableComponents { get; private set; }
+
+        public bool Enabled
+        {
+            get => _enabled;
+            set
+            {
+                _enabled = value;
+                if (_enabled)
+                    OnEnabled();
+                else
+                    OnDisabled();
+            }
+        }
 
         private bool _destroying = false;
 
@@ -108,6 +137,18 @@ namespace FedoraEngine.ECS.Entities
             }
         }
 
+        public void OnEnabled()
+        {
+            foreach (var component in Components)
+                component.OnEntityEnabled();
+        }
+
+        public void OnDisabled()
+        {
+            foreach (var component in Components)
+                component.OnEntityDisabled();
+        }
+
         public Entity AddComponents(IEnumerable<Component> components)
         {
             var enumerable = components as Component[] ?? components.ToArray();
@@ -147,13 +188,13 @@ namespace FedoraEngine.ECS.Entities
             if (!Enabled)
                 return;
 
-            foreach (var component in Components)
+            DrawableComponents = Components.AsEnumerable().Where(c => typeof(IDrawable).IsAssignableFrom(c.GetType())).ToList();
+            DrawableComponents.Sort((layer1, layer2) => ((IDrawable)layer1).RenderLayer.CompareTo(((IDrawable)layer2).RenderLayer));
+
+            foreach (var component in DrawableComponents)
             {
                 if (!component.Enabled) continue;
-                if (component is IDrawable drawableComponent)
-                {
-                    drawableComponent.Draw();
-                }
+                ((IDrawable)component).Draw();
             }
         }
 

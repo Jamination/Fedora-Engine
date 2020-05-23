@@ -12,7 +12,27 @@ namespace FedoraEngine.ECS.Components
 
         public Scene Scene => Entity.Scene;
 
-        public bool Enabled { get; set; } = true;
+        private bool _enabled = true;
+
+        protected Rectangle aabb;
+
+        public Rectangle AABB
+        {
+            get => new Rectangle(Position.ToPoint(), aabb.Size);
+        }
+
+        public bool Enabled
+        {
+            get => _enabled;
+            set
+            {
+                _enabled = value;
+                if (_enabled)
+                    OnEnabled();
+                else
+                    OnDisabled();
+            }
+        }
 
         public Transform Transform
         {
@@ -65,5 +85,13 @@ namespace FedoraEngine.ECS.Components
         public virtual void OnRotationChanged() { }
 
         public virtual void OnScaleChanged() { }
+
+        public virtual void OnEntityEnabled() { }
+
+        public virtual void OnEntityDisabled() { }
+
+        public virtual void OnEnabled() { }
+
+        public virtual void OnDisabled() { }
     }
 }

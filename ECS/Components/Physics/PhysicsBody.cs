@@ -25,5 +25,15 @@ namespace FedoraEngine.ECS.Components.Physics
         {
             World.RemoveBody(Body);
         }
+
+        public override void OnEntityDisabled()
+        {
+            Body.Enabled = false;
+        }
+
+        public override void OnEntityEnabled()
+        {
+            Body.Enabled = true;
+        }
     }
 }

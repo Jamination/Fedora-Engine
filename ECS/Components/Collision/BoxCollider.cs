@@ -9,7 +9,7 @@ namespace FedoraEngine.ECS.Components.Collision
     {
         private Rectangle _aabb;
 
-        public Rectangle AABB
+        public new Rectangle AABB
         {
             get { return _aabb; }
             set
@@ -38,6 +38,8 @@ namespace FedoraEngine.ECS.Components.Collision
                     return new Rectangle(Transform.Position.ToPoint() + AABB.Location, AABB.Size * Transform.Scale.ToPoint());
             }
         }
+
+        public int RenderLayer { get; set; }
 
         public bool DebugRender = false;
 

@@ -8,6 +8,8 @@ using FedoraEngine.ECS.Systems;
 using FedoraEngine.ECS.Components;
 using FedoraEngine.Utils;
 using VelcroPhysics.Dynamics;
+using System.Security.Policy;
+using System.Linq;
 
 namespace FedoraEngine.ECS.Scenes
 {
@@ -17,7 +19,7 @@ namespace FedoraEngine.ECS.Scenes
 
         public readonly List<Entity> Entities;
 
-        public readonly List<ProcessingSystem> Systems;
+        public readonly HashSet<ProcessingSystem> Systems;
 
         public CollisionSystem CollisionSystem;
 
@@ -47,7 +49,7 @@ namespace FedoraEngine.ECS.Scenes
         {
             CurrentCore = core;
             Content = new BetterContentManager(Core.Services, "Content");
-            Systems = new List<ProcessingSystem>();
+            Systems = new HashSet<ProcessingSystem>();
             Entities = new List<Entity>();
 
             MainCamera = new Camera();
@@ -188,7 +190,9 @@ namespace FedoraEngine.ECS.Scenes
         {
             Graphics.Clear(ClearColour);
 
-            SpriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Matrix.CreateTranslation((int)Math.Round(MainCamera.Transform.Translation.X), (int)Math.Round(MainCamera.Transform.Translation.Y), 0));
+            SpriteBatch.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointClamp, transformMatrix: Matrix.CreateTranslation((int)Math.Round(MainCamera.Transform.Translation.X), (int)Math.Round(MainCamera.Transform.Translation.Y), 0));
+
+            Entities.Sort((ent1, ent2) => ent1.RenderLayer.CompareTo(ent2.RenderLayer));
 
             foreach (var entity in Entities)
                 entity.DrawComponents();

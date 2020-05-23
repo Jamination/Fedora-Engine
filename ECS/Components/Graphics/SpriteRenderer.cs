@@ -2,6 +2,8 @@
 using FedoraEngine.Graphics;
 using System;
 using System.Drawing;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using Point = Microsoft.Xna.Framework.Point;
 
 namespace FedoraEngine.ECS.Components.Graphics
 {
@@ -10,6 +12,10 @@ namespace FedoraEngine.ECS.Components.Graphics
         public Sprite Sprite { get; set; }
 
         public SpriteRenderer() { }
+
+        public new Rectangle AABB => new Rectangle(Position.ToPoint(), new Point((int)Sprite.Bounds.Width, (int)Sprite.Bounds.Height));
+
+        public int RenderLayer { get; set; }
 
         public SpriteRenderer(Sprite sprite)
         {

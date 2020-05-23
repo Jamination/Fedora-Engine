@@ -226,14 +226,19 @@ namespace FedoraEngine
 
             foreach (var entity in Scene.Entities)
             {
-                if (ImGui.CollapsingHeader(entity.Name))
+                if (ImGui.CollapsingHeader($"{entity.Name}{entity.Id}"))
                 {
                     ImGui.Indent();
 
-                    ImGui.Checkbox("Enabled", ref entity.Enabled);
+                    bool enabled = entity.Enabled;
+                    ImGui.Checkbox("Enabled", ref enabled);
+                    if (entity.Enabled != enabled)
+                        entity.Enabled = enabled;
 
                     if (ImGui.Button("Destroy"))
                         entitiesToDestroy.Add(entity);
+
+                    ImGui.Text($"AABB: {entity.AABB}");
 
                     ImGui.TextColored(new System.Numerics.Vector4(Color.Yellow.ToVector3().ToNumericVector3(), 1f), "Transform:");
                     ImGui.Indent();

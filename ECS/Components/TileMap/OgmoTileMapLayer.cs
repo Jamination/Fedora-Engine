@@ -23,6 +23,8 @@ namespace FedoraEngine.ECS.Components.TileMap
 
         public Texture2D TileAtlas { get; private set; }
 
+        public int RenderLayer { get; set; }
+
         public OgmoTileMapLayer(OgmoMap map, string name, JArray dataCoords2D, uint gridCellWidth, uint gridCellHeight, string tileset, Texture2D tileAtlas)
         {
             TileMap = map;

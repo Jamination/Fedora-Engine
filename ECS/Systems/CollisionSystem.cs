@@ -24,7 +24,7 @@ namespace FedoraEngine.ECS.Systems
             Maps = new HashSet<OgmoMap>();
         }
 
-        public override void Update(IList<Entity> entities)
+        public override void Update(List<Entity> entities)
         {
             foreach (var component in TriggerableComponents)
             {

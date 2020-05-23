@@ -5,7 +5,7 @@ namespace FedoraEngine.ECS.Systems
 {
     public abstract class EntityProcessingSystem : ProcessingSystem
     {
-        public virtual void Update(IList<Entity> entities) { }
+        public virtual void Update(List<Entity> entities) { }
 
         public virtual void OnEntityAddedToScene(Entity entity) { }
 

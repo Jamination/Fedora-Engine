@@ -2,6 +2,8 @@
 {
     public interface IDrawable
     {
+        int RenderLayer { get; set; }
+
         void Draw();
     }
 }

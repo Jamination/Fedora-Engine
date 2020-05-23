@@ -13,6 +13,13 @@ namespace FedoraEngine.ECS.Components.Graphics
 
         public Texture2D RectTexture { get; set; }
 
+        public new Rectangle AABB
+        {
+            get => new Rectangle((int)Position.X, (int)Position.Y, Bounds.Width * (int)Scale.X, Bounds.Height * (int)Scale.Y);
+        }
+
+        public int RenderLayer { get; set; }
+
         public BoxRenderer(Rectangle rect, Color colour)
         {
             Bounds = rect;
