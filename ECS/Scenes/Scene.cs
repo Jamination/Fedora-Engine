@@ -10,6 +10,7 @@ using FedoraEngine.Utils;
 using VelcroPhysics.Dynamics;
 using FedoraEngine.Graphics;
 using System.Linq;
+using FedoraEngine.UI;
 
 namespace FedoraEngine.ECS.Scenes
 {
@@ -35,6 +36,8 @@ namespace FedoraEngine.ECS.Scenes
 
         public Vector2 ScreenCentre => Core.ScreenCentre;
 
+        public Stage Stage { get; set; }
+
         public World World { get; set; }
 
         public GraphicsDevice Graphics
@@ -57,6 +60,8 @@ namespace FedoraEngine.ECS.Scenes
             Content = new BetterContentManager(Core.Services, "Content");
             Systems = new HashSet<ProcessingSystem>();
             Entities = new List<Entity>();
+
+            Stage = new Stage();
 
             MainCamera = new Camera();
 
@@ -235,7 +240,11 @@ namespace FedoraEngine.ECS.Scenes
 
             foreach (var entity in Entities)
                 entity.DrawComponents();
+
+            HandleUI();
         }
+
+        public virtual void HandleUI() { }
 
         public void Dispose()
         {

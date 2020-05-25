@@ -70,6 +70,8 @@ namespace FedoraEngine.ECS.Entities
             get => Transform.Children;
         }
 
+        public bool Global { get; set; } = false;
+
         public Entity(string name)
         {
             Name = name;

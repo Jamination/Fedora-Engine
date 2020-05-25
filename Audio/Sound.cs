@@ -14,9 +14,12 @@ namespace FedoraEngine.Audio
 
         public float Pan { get; set; }
 
-        public Sound(string filePath, bool looping = false, float volume = 1f, float pitch = 0f, float pan = 0f)
+        public Sound(string filePath, bool looping = false, bool global = false, float volume = 1f, float pitch = 0f, float pan = 0f)
         {
-            SoundEffect = Core.Scene.Content.Load<SoundEffect>(filePath);
+            if (global)
+                SoundEffect = Core.Content.Load<SoundEffect>(filePath);
+            else
+                SoundEffect = Core.Scene.Content.Load<SoundEffect>(filePath);
             Looping = looping;
             Volume = volume;
             Pitch = pitch;

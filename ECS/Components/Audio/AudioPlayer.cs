@@ -1,5 +1,6 @@
 ﻿using FedoraEngine.Audio;
 using Microsoft.Xna.Framework.Audio;
+using System;
 using System.Collections.Generic;
 
 namespace FedoraEngine.ECS.Components.Audio
@@ -51,6 +52,7 @@ namespace FedoraEngine.ECS.Components.Audio
 
         public override void OnRemovedFromEntity()
         {
+            Console.WriteLine("AAAAAA");
             foreach (var sound in CurrentlyPlayingSoundEffects)
             {
                 sound.Stop();

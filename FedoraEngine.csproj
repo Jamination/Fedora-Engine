@@ -76,6 +76,7 @@
     <Compile Include="ECS\Components\Graphics\TextRenderer.cs" />
     <Compile Include="ECS\Components\Physics\PhysicsBody.cs" />
     <Compile Include="Graphics\SortModes.cs" />
+    <Compile Include="UI\Stage.cs" />
     <Compile Include="Utils\BetterContentManager.cs" />
     <Compile Include="ECS\Components\Camera.cs" />
     <Compile Include="ECS\Components\Collision\BoxCollider.cs" />
