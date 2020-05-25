@@ -43,6 +43,8 @@ namespace FedoraEngine
 
         public static Vector2 ScreenCentre => new Vector2(Instance.GraphicsDevice.Viewport.Width * .5f, Instance.GraphicsDevice.Viewport.Height * .5f);
 
+        public static Vector2 WorldScreenCentre => Scene.MainCamera.ScreenToWorld(ScreenCentre);
+
         private string _windowTitle;
         private readonly string _baseWindowTitle;
 
@@ -166,7 +168,7 @@ namespace FedoraEngine
                 Exit();
 
 #if DEBUG
-            if (Input.IsKeyPressed(Input.KeyMap["reloadScene"]))
+            if (Input.IsKeyPressed(Input.KeyMap["reloadScene"]) && !ImGuiEnabled)
                 Scene.Reload();
 
             if (Input.IsKeyPressed(Input.KeyMap["toggleDebugCollisions"]))
@@ -242,6 +244,13 @@ namespace FedoraEngine
                     if (ImGui.Button("Destroy"))
                         entitiesToDestroy.Add(entity);
 
+                    ImGui.Spacing();
+
+                    ImGui.InputFloat("Render Layer", ref entity.RenderLayer);
+                    ImGui.Checkbox("Sorting", ref entity.Sorting);
+
+                    ImGui.Spacing();
+
                     ImGui.Text($"AABB: {entity.AABB}");
 
                     ImGui.TextColored(new System.Numerics.Vector4(Color.Yellow.ToVector3().ToNumericVector3(), 1f), "Transform:");
@@ -307,6 +316,13 @@ namespace FedoraEngine
                                 {
                                     bool value = (bool)property.GetValue(component);
                                     ImGui.Checkbox(property.Name, ref value);
+                                    if (property.SetMethod != null && property.SetMethod.IsPublic)
+                                        property.SetValue(component, value);
+                                }
+                                else if (property.GetValue(component) is string)
+                                {
+                                    string value = (string)property.GetValue(component);
+                                    ImGui.InputTextMultiline(property.Name, ref value, 1000, new System.Numerics.Vector2(value.Length * 10f, 200f));
                                     if (property.SetMethod != null && property.SetMethod.IsPublic)
                                         property.SetValue(component, value);
                                 }

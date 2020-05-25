@@ -33,7 +33,13 @@ namespace FedoraEngine.ECS.Components
         
         public Rectangle Bounds { get; set; }
 
+        public Entity FollowTarget { get; private set; }
+
         public Scene Scene => Core.Scene;
+
+        public bool LockXMovement { get; set; } = false;
+
+        public bool LockYMovement { get; set; } = false;
 
         public Rectangle ScreenBounds
         {
@@ -61,16 +67,17 @@ namespace FedoraEngine.ECS.Components
                 _offset = Matrix.CreateTranslation((Core.StartWindowWidth / 2) / _zoomLevel, (Core.StartWindowHeight / 2) / _zoomLevel, 0f);
         }
 
-        public void Follow(Entity entity)
+        public void Follow(Entity target)
         {
-            if (!_debugMode && entity != null)
+            if (!_debugMode && target != null)
             {
-                _position = Matrix.Lerp(_position, Matrix.CreateTranslation(
-                    -entity.Transform.Position.X,
-                    -entity.Transform.Position.Y,
-                    0
-                ), _drag);
+                FollowTarget = target;
             }
+        }
+
+        public void StopFollowing()
+        {
+            FollowTarget = null;
         }
 
         public void Update()
@@ -88,6 +95,35 @@ namespace FedoraEngine.ECS.Components
 #endif
             //Position.Translation = Vector3.Clamp(Position.Translation, new Vector3(Bounds.X, Bounds.Y, 0f), new Vector3(Bounds.Width, Bounds.Height, 0f));
             //Position.Translation = new Vector3((int)Position.Translation.X, -360f, 0f);
+
+            if (FollowTarget != null)
+            {
+                if (!LockXMovement && !LockYMovement)
+                {
+                    _position = Matrix.Lerp(_position, Matrix.CreateTranslation(
+                        -FollowTarget.Transform.Position.X,
+                        -FollowTarget.Transform.Position.Y,
+                        0
+                    ), _drag);
+                }
+                else if (LockXMovement)
+                {
+                    _position = Matrix.Lerp(_position, Matrix.CreateTranslation(
+                        _position.Translation.X,
+                        -FollowTarget.Transform.Position.Y,
+                        0
+                    ), _drag);
+                }
+                else if (LockYMovement)
+                {
+                    _position = Matrix.Lerp(_position, Matrix.CreateTranslation(
+                        -FollowTarget.Transform.Position.X,
+                        _position.Translation.Y,
+                        0
+                    ), _drag);
+                }
+            }
+
             Transform = _zoom * _rotation * _position * _offset;
         }
 

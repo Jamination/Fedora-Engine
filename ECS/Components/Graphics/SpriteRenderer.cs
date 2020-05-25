@@ -11,9 +11,9 @@ namespace FedoraEngine.ECS.Components.Graphics
     {
         public Sprite Sprite { get; set; }
 
-        public int RepeatAmountX { get; set; } = 1;
+        public int RepeatAmountX { get; set; } = 0;
 
-        public int RepeatAmountY { get; set; } = 1;
+        public int RepeatAmountY { get; set; } = 0;
 
         public SpriteRenderer() { }
 
@@ -33,66 +33,30 @@ namespace FedoraEngine.ECS.Components.Graphics
             if (Sprite == null)
                 return;
 
-            if (RepeatAmountX > 1 || RepeatAmountY > 1)
+            Vector2 centerOrigin = Vector2.Zero;
+
+            if (Sprite.Centered)
+                centerOrigin = new Vector2(Sprite.SourceRect.Width * Sprite.Scale.X * .5f, Sprite.SourceRect.Height * Sprite.Scale.Y * .5f);
+
+            var spriteRect = new RectangleF(Position.X - centerOrigin.X + Sprite.Bounds.X, Position.Y - centerOrigin.Y + Sprite.Bounds.Y, Sprite.Bounds.Width * Scale.X, Sprite.Bounds.Height * Scale.Y);
+            if (Sprite == null || !spriteRect.IntersectsWith(new RectangleF(Scene.MainCamera.ScreenBounds.X, Scene.MainCamera.ScreenBounds.Y, Scene.MainCamera.ScreenBounds.Width, Scene.MainCamera.ScreenBounds.Height)))
             {
-                for (int x = 0; x < RepeatAmountX; x++)
-                {
-                    for (int y = 0; x < RepeatAmountY; y++)
-                    {
-                        Vector2 centerOrigin = Vector2.Zero;
-
-                        if (Sprite.Centered)
-                            centerOrigin = new Vector2(Sprite.SourceRect.Width * Sprite.Scale.X * .5f, Sprite.SourceRect.Height * Sprite.Scale.Y * .5f);
-
-                        var spriteRect = new RectangleF(Position.X - centerOrigin.X + Sprite.Bounds.X, Position.Y - centerOrigin.Y + Sprite.Bounds.Y, Sprite.Bounds.Width * Scale.X, Sprite.Bounds.Height * Scale.Y);
-                        if (Sprite == null || !spriteRect.IntersectsWith(new RectangleF(Scene.MainCamera.ScreenBounds.X, Scene.MainCamera.ScreenBounds.Y, Scene.MainCamera.ScreenBounds.Width, Scene.MainCamera.ScreenBounds.Height)))
-                        {
-                            return;
-                        }
-
-                        SpriteBatch.Draw(
-                            Sprite.Texture,
-                            new Vector2(
-                                (int)Math.Round(Transform.Position.X + (int)Math.Round(Sprite.Origin.X)) + (RepeatAmountX * Sprite.Bounds.Width),
-                                (int)Math.Round(Transform.Position.Y) + (int)Math.Round(Sprite.Origin.Y) + (RepeatAmountY * Sprite.Bounds.Height)),
-                            Sprite.SourceRect,
-                            Sprite.Colour,
-                            Transform.Rotation + Sprite.Rotation,
-                            Sprite.Origin + centerOrigin,
-                            Transform.LocalScale * Sprite.Scale,
-                            Sprite.Flip,
-                            Sprite.LayerDepth
-                        );
-                    }
-                }
+                return;
             }
-            else
-            {
-                Vector2 centerOrigin = Vector2.Zero;
 
-                if (Sprite.Centered)
-                    centerOrigin = new Vector2(Sprite.SourceRect.Width * Sprite.Scale.X * .5f, Sprite.SourceRect.Height * Sprite.Scale.Y * .5f);
-
-                var spriteRect = new RectangleF(Position.X - centerOrigin.X + Sprite.Bounds.X, Position.Y - centerOrigin.Y + Sprite.Bounds.Y, Sprite.Bounds.Width * Scale.X, Sprite.Bounds.Height * Scale.Y);
-                if (Sprite == null || !spriteRect.IntersectsWith(new RectangleF(Scene.MainCamera.ScreenBounds.X, Scene.MainCamera.ScreenBounds.Y, Scene.MainCamera.ScreenBounds.Width, Scene.MainCamera.ScreenBounds.Height)))
-                {
-                    return;
-                }
-
-                SpriteBatch.Draw(
-                    Sprite.Texture,
-                    new Vector2(
-                        (int)Math.Round(Transform.Position.X + (int)Math.Round(Sprite.Origin.X)),
-                        (int)Math.Round(Transform.Position.Y) + (int)Math.Round(Sprite.Origin.Y)),
-                    Sprite.SourceRect,
-                    Sprite.Colour,
-                    Transform.Rotation + Sprite.Rotation,
-                    Sprite.Origin + centerOrigin,
-                    Transform.LocalScale * Sprite.Scale,
-                    Sprite.Flip,
-                    Sprite.LayerDepth
-                );
-            }
+            SpriteBatch.Draw(
+                Sprite.Texture,
+                new Vector2(
+                    (int)Math.Round(Transform.Position.X + (int)Math.Round(Sprite.Origin.X)),
+                    (int)Math.Round(Transform.Position.Y) + (int)Math.Round(Sprite.Origin.Y)),
+                Sprite.SourceRect,
+                Sprite.Colour,
+                Transform.Rotation + Sprite.Rotation,
+                Sprite.Origin + centerOrigin,
+                Transform.LocalScale * Sprite.Scale,
+                Sprite.Flip,
+                Sprite.LayerDepth
+            );
         }
     }
 }

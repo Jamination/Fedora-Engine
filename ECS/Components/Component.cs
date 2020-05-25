@@ -12,6 +12,8 @@ namespace FedoraEngine.ECS.Components
 
         public Scene Scene => Entity.Scene;
 
+        public Camera SceneCamera => Scene.MainCamera;
+
         private bool _enabled = true;
 
         protected Rectangle aabb;
@@ -73,6 +75,8 @@ namespace FedoraEngine.ECS.Components
         {
             return Entity.GetComponent<T>();
         }
+
+        public virtual void OnLoad() { }
 
         public virtual void OnAddedToEntity() { }
 

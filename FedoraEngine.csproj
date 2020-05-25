@@ -70,9 +70,11 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Audio\Sound.cs" />
+    <Compile Include="ECS\Components\Audio\AudioPlayer.cs" />
     <Compile Include="ECS\Components\Graphics\DepthSort.cs" />
+    <Compile Include="ECS\Components\Graphics\TextRenderer.cs" />
     <Compile Include="ECS\Components\Physics\PhysicsBody.cs" />
-    <Compile Include="Export.cs" />
     <Compile Include="Graphics\SortModes.cs" />
     <Compile Include="Utils\BetterContentManager.cs" />
     <Compile Include="ECS\Components\Camera.cs" />
@@ -148,6 +150,7 @@
       <Name>VelcroPhysics.MonoGame</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <PropertyGroup>

@@ -29,6 +29,8 @@ namespace FedoraEngine.ECS.Scenes
 
         public bool Paused = false;
 
+        public bool Loaded { get; protected set; } = false;
+
         public SortModes SortMode { get; set; } = SortModes.None;
 
         public Vector2 ScreenCentre => Core.ScreenCentre;
@@ -62,13 +64,24 @@ namespace FedoraEngine.ECS.Scenes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual void Load() { }
+        public virtual void Load()
+        {
+            foreach (var entity in Entities)
+            {
+                foreach (var component in entity.Components)
+                    component.OnLoad();
+            }
+            Loaded = true;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Reload()
         {
             foreach (var entity in Entities)
+            {
                 entity.Destroy();
+                entity.Dispose();
+            }
 
             Entities.Clear();
 

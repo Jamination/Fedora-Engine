@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 
 namespace FedoraEngine.Engine.Input
@@ -14,6 +15,22 @@ namespace FedoraEngine.Engine.Input
         public static MouseState CurrentMouseState
         {
             get { return _mouseState; }
+        }
+
+        public static Vector2 ScreenMousePosition
+        {
+            get
+            {
+                return CurrentMouseState.Position.ToVector2();
+            }
+        }
+
+        public static Vector2 WorldMousePosition
+        {
+            get
+            {
+                return Core.Scene.MainCamera.ScreenToWorld(ScreenMousePosition);
+            }
         }
 
         public static Dictionary<string, Keys[]> KeyMap = new Dictionary<string, Keys[]>
