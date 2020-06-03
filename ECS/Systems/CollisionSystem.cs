@@ -98,7 +98,7 @@ namespace FedoraEngine.ECS.Systems
         {
             foreach (var map in Maps)
             {
-                foreach (var layer in map.MapData.Layers)
+                foreach (var layer in map.MapData.TileLayers)
                 {
                     if (layer.IsTileAt(x, y))
                         return true;
@@ -113,7 +113,7 @@ namespace FedoraEngine.ECS.Systems
 
             foreach (var map in Maps)
             {
-                foreach (var layer in map.MapData.Layers)
+                foreach (var layer in map.MapData.TileLayers)
                 {
                     if (layer != null)
                         tiles.Add(layer.GetTileAt(x, y));
@@ -128,7 +128,7 @@ namespace FedoraEngine.ECS.Systems
 
             foreach (var map in Maps)
             {
-                foreach (var layer in map.MapData.Layers)
+                foreach (var layer in map.MapData.TileLayers)
                 {
                     if (layer.GetTileAt(x, y) is OgmoSlopedTile)
                     {

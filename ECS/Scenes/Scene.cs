@@ -16,7 +16,7 @@ namespace FedoraEngine.ECS.Scenes
 {
     public class Scene : IDisposable
     {
-        public Color ClearColour = new Color(.2f, .2f, .25f, 1f);
+        public Color ClearColour = new Color(64, 64, 64);
 
         public readonly List<Entity> Entities;
 
@@ -24,13 +24,19 @@ namespace FedoraEngine.ECS.Scenes
 
         public CollisionSystem CollisionSystem;
 
-        public readonly Camera MainCamera;
+        public Camera MainCamera { get; private set; }
 
         public readonly Core CurrentCore;
 
         public bool Paused = false;
 
         public bool Loaded { get; protected set; } = false;
+
+        public bool MouseEnabled
+        {
+            get => Core.Instance.IsMouseVisible;
+            set => Core.Instance.IsMouseVisible = value;
+        }
 
         public SortModes SortMode { get; set; } = SortModes.None;
 
@@ -39,6 +45,8 @@ namespace FedoraEngine.ECS.Scenes
         public Stage Stage { get; set; }
 
         public World World { get; set; }
+
+        private bool _reloadingDeferred = false;
 
         public GraphicsDevice Graphics
         {
@@ -68,9 +76,15 @@ namespace FedoraEngine.ECS.Scenes
             CollisionSystem = (CollisionSystem)RegisterSystem(new CollisionSystem());
         }
 
+        public void ChangeScene(Scene scene)
+        {
+            Core.ChangeScene(scene);
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual void Load()
         {
+            _reloadingDeferred = false;
             foreach (var entity in Entities)
             {
                 foreach (var component in entity.Components)
@@ -93,8 +107,18 @@ namespace FedoraEngine.ECS.Scenes
             if (World != null)
                 World.Clear();
 
+            Content.Unload();
+            Content.Dispose();
+            Content = new BetterContentManager(Core.Services, "Content");
+
             Core.GlobalDebugCollisionsEnabled = false;
+            MainCamera = new Camera();
             Load();
+        }
+
+        public void ReloadDeferred()
+        {
+            _reloadingDeferred = true;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -180,8 +204,15 @@ namespace FedoraEngine.ECS.Scenes
             return null;
         }
 
+        public Entity FindGlobalEntity(string name)
+        {
+            return Core.Instance.FindGlobalEntity(name);
+        }
+
         public virtual void Update()
         {
+            if (_reloadingDeferred)
+                Reload();
             if (Paused)
                 return;
 
@@ -214,7 +245,7 @@ namespace FedoraEngine.ECS.Scenes
         {
             Graphics.Clear(ClearColour);
 
-            SpriteBatch.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointClamp, transformMatrix: Matrix.CreateTranslation((int)Math.Round(MainCamera.Transform.Translation.X), (int)Math.Round(MainCamera.Transform.Translation.Y), 0));
+            SpriteBatch.Begin(sortMode: SpriteSortMode.Deferred, samplerState: SamplerState.PointWrap, transformMatrix: Matrix.CreateTranslation((int)Math.Round(MainCamera.Transform.Translation.X), (int)Math.Round(MainCamera.Transform.Translation.Y), 0));
 
             switch (SortMode)
             {

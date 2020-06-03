@@ -40,7 +40,7 @@ namespace FedoraEngine.ECS.Components.Physics
             IsOnRightSlope = false;
             IsOnLeftSlope = false;
 
-            if (!Collider.Collidable)
+            if (Collider == null || !Collider.Collidable)
                 return;
 
             var neighbouringSlopeTiles = new HashSet<OgmoSlopedTile>();

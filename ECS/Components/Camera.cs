@@ -23,7 +23,9 @@ namespace FedoraEngine.ECS.Components
         private const float MaxSpeed = 12f;
         private const float Speed = 600f;
 
-        private float _drag = .05f;
+        public float DragX { get; set; } = .05f;
+
+        public float DragY { get; set; } = .05f;
 
         private float _currentSpeed = Speed;
 
@@ -93,8 +95,6 @@ namespace FedoraEngine.ECS.Components
                 Move();
             }
 #endif
-            //Position.Translation = Vector3.Clamp(Position.Translation, new Vector3(Bounds.X, Bounds.Y, 0f), new Vector3(Bounds.Width, Bounds.Height, 0f));
-            //Position.Translation = new Vector3((int)Position.Translation.X, -360f, 0f);
 
             if (FollowTarget != null)
             {
@@ -102,9 +102,14 @@ namespace FedoraEngine.ECS.Components
                 {
                     _position = Matrix.Lerp(_position, Matrix.CreateTranslation(
                         -FollowTarget.Transform.Position.X,
+                        _position.Translation.Y,
+                        0
+                    ), DragX);
+                    _position = Matrix.Lerp(_position, Matrix.CreateTranslation(
+                        _position.Translation.X,
                         -FollowTarget.Transform.Position.Y,
                         0
-                    ), _drag);
+                    ), DragY);
                 }
                 else if (LockXMovement)
                 {
@@ -112,7 +117,7 @@ namespace FedoraEngine.ECS.Components
                         _position.Translation.X,
                         -FollowTarget.Transform.Position.Y,
                         0
-                    ), _drag);
+                    ), DragY);
                 }
                 else if (LockYMovement)
                 {
@@ -120,7 +125,7 @@ namespace FedoraEngine.ECS.Components
                         -FollowTarget.Transform.Position.X,
                         _position.Translation.Y,
                         0
-                    ), _drag);
+                    ), DragX);
                 }
             }
 

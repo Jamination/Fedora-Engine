@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Runtime.CompilerServices;
 
+#nullable enable
+
 namespace FedoraEngine.ECS.Components
 {
     public abstract class Component
@@ -17,6 +19,8 @@ namespace FedoraEngine.ECS.Components
         private bool _enabled = true;
 
         protected Rectangle aabb;
+
+        public Entity? Parent => Entity.Parent?.Entity;
 
         public Rectangle AABB
         {

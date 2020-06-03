@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace FedoraEngine.ECS.Components.TileMap
 {
@@ -8,7 +9,7 @@ namespace FedoraEngine.ECS.Components.TileMap
 
         public uint Height { get; private set; }
 
-        public List<OgmoTileMapLayer> Layers { get; private set; }
+        public List<OgmoTileMapLayer> TileLayers { get; private set; }
 
         public OgmoMap TileMap { get; set; }
 
@@ -16,7 +17,8 @@ namespace FedoraEngine.ECS.Components.TileMap
         {
             Width = width;
             Height = height;
-            Layers = layers;
+            TileLayers = layers;
+            Console.Write(width);
         }
     }
 }

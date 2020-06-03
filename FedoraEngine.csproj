@@ -73,9 +73,13 @@
     <Compile Include="Audio\Sound.cs" />
     <Compile Include="ECS\Components\Audio\AudioPlayer.cs" />
     <Compile Include="ECS\Components\Graphics\DepthSort.cs" />
+    <Compile Include="ECS\Components\Graphics\MovingBackground.cs" />
+    <Compile Include="ECS\Components\Graphics\ParallaxBackground.cs" />
     <Compile Include="ECS\Components\Graphics\TextRenderer.cs" />
+    <Compile Include="ECS\Components\Particles\ParticleEmitter.cs" />
     <Compile Include="ECS\Components\Physics\PhysicsBody.cs" />
     <Compile Include="Graphics\SortModes.cs" />
+    <Compile Include="Particles\Particle.cs" />
     <Compile Include="UI\Stage.cs" />
     <Compile Include="Utils\BetterContentManager.cs" />
     <Compile Include="ECS\Components\Camera.cs" />

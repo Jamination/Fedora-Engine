@@ -50,9 +50,14 @@ namespace FedoraEngine.ECS.Components.Audio
             CurrentlyPlayingSoundEffects.Add(soundEffectInstance);
         }
 
+        public void Stop()
+        {
+            foreach (var sound in CurrentlyPlayingSoundEffects)
+                sound.Stop();
+        }
+
         public override void OnRemovedFromEntity()
         {
-            Console.WriteLine("AAAAAA");
             foreach (var sound in CurrentlyPlayingSoundEffects)
             {
                 sound.Stop();
@@ -69,8 +74,10 @@ namespace FedoraEngine.ECS.Components.Audio
                 if (sound.State == SoundState.Stopped)
                     _soundsToRemove.Enqueue(sound);
 
-                if (Core.Scene.Paused)
+                if (Core.Scene.Paused && sound.State == SoundState.Playing)
                     sound.Pause();
+                else if (!Core.Scene.Paused && sound.State == SoundState.Paused)
+                    sound.Resume();
             }
 
             foreach (var sound in _soundsToRemove)

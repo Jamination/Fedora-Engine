@@ -49,9 +49,9 @@ namespace FedoraEngine.ECS.Components.TileMap
 
                 MapData = JsonConvert.DeserializeObject<OgmoMapData>(jsonFromFile);
 
-                MapData.Layers.Reverse();
+                MapData.TileLayers.Reverse();
 
-                foreach (var layer in MapData.Layers)
+                foreach (var layer in MapData.TileLayers)
                     layer.Load(this);
             } catch (JsonException e)
             {
@@ -61,15 +61,15 @@ namespace FedoraEngine.ECS.Components.TileMap
 
         public void Update()
         {
-            foreach (var layer in MapData.Layers)
+            foreach (var layer in MapData.TileLayers)
                 layer.Update();
         }
 
         public void Draw()
         {
-            MapData.Layers.Sort((layer1, layer2) => layer1.RenderLayer.CompareTo(layer2.RenderLayer));
+            MapData.TileLayers.Sort((layer1, layer2) => layer1.RenderLayer.CompareTo(layer2.RenderLayer));
 
-            foreach (var layer in MapData.Layers)
+            foreach (var layer in MapData.TileLayers)
                 layer.Draw();
         }
     }

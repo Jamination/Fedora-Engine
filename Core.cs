@@ -83,7 +83,21 @@ namespace FedoraEngine
             set { _windowTitle = value; Window.Title = value; }
         }
 
-        public static bool ImGuiEnabled { get; set; } = false;
+        private static bool _debugEnabled = false;
+
+        public static bool DebugEnabled
+        {
+            get => _debugEnabled;
+            set
+            {
+                bool prevDebugEnabled = _debugEnabled;
+                _debugEnabled = value;
+                if (!prevDebugEnabled && _debugEnabled)
+                    Instance.IsMouseVisible = true;
+                else
+                    Instance.IsMouseVisible = !Instance.IsMouseVisible;
+            }
+        }
 
         public static bool PhysicsEnabled { get; set; } = false;
 
@@ -122,6 +136,7 @@ namespace FedoraEngine
 
             MainRenderTarget = new RenderTarget2D(GraphicsDevice, (int)windowWidth, (int)windowHeight, false, SurfaceFormat.Color, DepthFormat.None, 1, RenderTargetUsage.DiscardContents);
             
+            Managers = new HashSet<Manager>();
             GlobalEntities = new HashSet<Entity>();
 
             ImGUIRenderer = new ImGUIRenderer(Instance);
@@ -129,13 +144,28 @@ namespace FedoraEngine
             ImGUIRenderer.RebuildFontAtlas();
         }
 
+        public Entity FindGlobalEntity(string name)
+        {
+            foreach (var entity in GlobalEntities)
+            {
+                if (entity.Name == name)
+                    return entity;
+            }
+            Console.WriteLine($"Could not find entity {name}.");
+            return null;
+        }
+
         public static void Quit()
         {
+            foreach (var manager in Managers)
+                manager.OnQuit();
             Instance.Exit();
         }
 
         protected override void Initialize()
         {
+            foreach (var manager in Managers)
+                manager.OnInitialize();
             base.Initialize();
         }
 
@@ -143,8 +173,8 @@ namespace FedoraEngine
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Managers = new HashSet<Manager>();
-
+            foreach (var manager in Managers)
+                manager.OnLoad();
             Scene.Load();
         }
 
@@ -190,7 +220,7 @@ namespace FedoraEngine
                 Exit();
 
 #if DEBUG
-            if (Input.IsKeyPressed(Input.KeyMap["reloadScene"]) && !ImGuiEnabled)
+            if (Input.IsKeyPressed(Input.KeyMap["reloadScene"]) && !DebugEnabled)
                 Scene.Reload();
 
             if (Input.IsKeyPressed(Input.KeyMap["toggleDebugCollisions"]))
@@ -200,7 +230,7 @@ namespace FedoraEngine
                 Scene.Paused = !Scene.Paused;
 
             if (Input.IsKeyPressed(Input.KeyMap["toggleImGui"]))
-                ImGuiEnabled = !ImGuiEnabled;
+                DebugEnabled = !DebugEnabled;
 #endif
 
             if (Input.IsKeyPressed(Input.KeyMap["toggleFullScreen"]))
@@ -211,6 +241,8 @@ namespace FedoraEngine
                 Scene.Dispose();
                 Scene = NextScene;
                 NextScene = null;
+                foreach (var manager in Managers)
+                    manager.OnSceneChanged(Scene);
                 Scene.Load();
             }
 
@@ -562,7 +594,7 @@ namespace FedoraEngine
             GraphicsDevice.Textures[0] = null;
 
 #if DEBUG
-            if (ImGuiEnabled)
+            if (DebugEnabled)
             {
                 ImGUIRenderer.BeginLayout(gameTime);
                 BuildImGui(gameTime);

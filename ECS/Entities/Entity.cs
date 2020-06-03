@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
+#nullable enable
+
 namespace FedoraEngine.ECS.Entities
 {
     public sealed class Entity : IDisposable
@@ -35,7 +37,7 @@ namespace FedoraEngine.ECS.Entities
             }
         }
 
-        public List<Component> DrawableComponents { get; private set; }
+        public List<Component>? DrawableComponents { get; private set; }
 
         public bool Enabled
         {
@@ -56,7 +58,7 @@ namespace FedoraEngine.ECS.Entities
 
         public Scene Scene => Core.Scene;
 
-        public Transform Parent
+        public Transform? Parent
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => Transform.Parent;
