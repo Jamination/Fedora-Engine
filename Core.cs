@@ -94,8 +94,6 @@ namespace FedoraEngine
                 _debugEnabled = value;
                 if (!prevDebugEnabled && _debugEnabled)
                     Instance.IsMouseVisible = true;
-                else
-                    Instance.IsMouseVisible = !Instance.IsMouseVisible;
             }
         }
 
